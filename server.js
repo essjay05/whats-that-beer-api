@@ -4,15 +4,45 @@ const PORT = 3030
 
 const app = express()
 
+// Middleware
+app.use(express.json())
+
+// Temporary Database
+const database = {
+  users: [
+    {
+      id: '123',
+      username: 'testuser123',
+      email: 'testuser123@gmail.com',
+      password: 'cookies', 
+      entries: 0,
+      joined: new Date()
+    },
+    {
+      id: '124',
+      username: 'user124',
+      email: 'user123@gmail.com',
+      password: 'bananas', 
+      entries: 0,
+      joined: new Date()
+    },
+  ]
+}
+
 // Routes
 // Home
 app.get('/', (req, res) => {
-  res.send('This is working')
+  res.json('This is working')
 })
 
 // Signin
 app.post('/signin', (req, res) => {
-  res.send('Signing in')
+  if(req.body.email === database.users[0].email &&
+    req.body.password === database.users[0].password) {
+      res.status(200).json('Successfully signed in')
+  } else {
+    res.status(400).json('error logging in')
+  }
 })
 
 app.listen(PORT, () => {
