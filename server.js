@@ -32,7 +32,7 @@ const database = {
 // Routes
 // Home
 app.get('/', (req, res) => {
-  res.json('This is working')
+  res.json(database.users)
 })
 
 // Signin
@@ -56,7 +56,23 @@ app.post('/register', (req, res) => {
     entries: 0,
     joined: new Date()
   })
+  database.push
   res.json(database.users[database.users.length-1])
+})
+
+// User profile
+app.get('/profile/:id', (req, res) => {
+  const { id } = req.params
+  let found = false
+  database.users.forEach( user => {
+    if (user.id === id) {
+      found = true
+      return res.json(user)
+    }
+  })
+  if (!found) {
+    res.status(400).json('User not found')
+  }
 })
 
 app.listen(PORT, () => {
