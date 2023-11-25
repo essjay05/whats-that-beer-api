@@ -45,6 +45,20 @@ app.post('/signin', (req, res) => {
   }
 })
 
+// Register
+app.post('/register', (req, res) => {
+  const { username, email, password } = req.body
+  database.users.push({
+    id: '125',
+    username: username,
+    email: email,
+    password: password, 
+    entries: 0,
+    joined: new Date()
+  })
+  res.json(database.users[database.users.length-1])
+})
+
 app.listen(PORT, () => {
   console.log(`App Server is listening on PORT:${PORT}`)
 })
