@@ -1,0 +1,17 @@
+{
+  "name": "whats-that-beer-api",
+  "version": "1.0.0",
+  "description": "image recognition for beers api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "essjay05",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
