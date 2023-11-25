@@ -5,8 +5,14 @@ const PORT = 3030
 const app = express()
 
 // Routes
+// Home
 app.get('/', (req, res) => {
   res.send('This is working')
+})
+
+// Signin
+app.post('/signin', (req, res) => {
+  res.send('Signing in')
 })
 
 app.listen(PORT, () => {
