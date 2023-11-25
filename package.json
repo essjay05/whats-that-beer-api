@@ -2,8 +2,9 @@
   "name": "whats-that-beer-api",
   "version": "1.0.0",
   "description": "image recognition for beers api",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "essjay05",
