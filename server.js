@@ -94,12 +94,3 @@ app.put('/image', (req, res) => {
 app.listen(PORT, () => {
   console.log(`App Server is listening on PORT:${PORT}`)
 })
-
-/*
-// General Route Planning
-  / --> res = this is working
-  /signin --> POST = success/fail
-  /register --> POST = user
-  /profile/:userId --> GET = user
-  /image --> PUT --> user
-*/
