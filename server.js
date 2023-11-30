@@ -1,6 +1,11 @@
-const express = require('express')
-const bcrypt = require('bcrypt-nodejs')
-const PORT = 3030
+const 
+  express = require('express'),
+  bcrypt = require('bcrypt-nodejs'),
+  mongoose = require('mongoose'),
+  PORT = 3030,
+  usersRoutes = require('./routes/users.js'),
+  // beerRoutes = require('./routes/beers.js')
+  path = require('path')
 
 const app = express()
 
