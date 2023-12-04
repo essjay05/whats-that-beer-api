@@ -4,39 +4,13 @@ const
   express = require('express'),
   bcrypt = require('bcrypt-nodejs'),
   PORT = process.env.PORT || 3030,
+  { client, connectToMongoDb } = require('./db.js'),
   usersRoutes = require('./routes/users.js'),
   beersRoutes = require('./routes/beers.js'),
   path = require('path')
 
+connectToMongoDb().catch(console.dir);
 const app = express()
-
-// MongoDB
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const mongoDbUri = `mongodb+srv://${process.env.MONGODB_ADMIN}:${process.env.MONGODB_PW}@cluster0.sut8v7b.mongodb.net/?retryWrites=true&w=majority`;
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(mongoDbUri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-
-run().catch(console.dir);
 
 // Middleware
 app.use(express.json())
@@ -171,3 +145,5 @@ bcrypt.hash('aloha', null, null, function(err, hash) {
 app.listen(PORT, () => {
   console.log(`App Server is listening on PORT:${PORT}`)
 })
+
+module.exports = client
