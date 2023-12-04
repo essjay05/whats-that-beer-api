@@ -17,11 +17,28 @@ module.exports = {
   },
   // Create new User
   create: (req, res) => {
-    User.create(req.body, (err, newUser) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      // const token = signToken(newUser)
-      res.json({ message: `SUCCESS created newUser: ${newUser}`})
+    // User.create(req.body, (err, newUser) => {
+    //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
+    //   // const token = signToken(newUser)
+    //   res.json({ message: `SUCCESS created newUser: ${newUser}`})
+    // })
+
+    const { name, email, password } = req.body
+
+    const newUser = new User ({
+      name: name,
+      email: email,
+      password: password,
     })
+    
+    newUser.save()
+      .then(() => res.send({
+        message: `SUCCESS! Created newUser!`
+      }))
+      .catch((err) => res.send({
+        message: `ERROR! Data not saved.`,
+        error: err
+      }))
   },
   // Edit User
   update: (req, res) => {

@@ -1,16 +1,55 @@
+require('dotenv').config()
+
 const 
   express = require('express'),
   bcrypt = require('bcrypt-nodejs'),
-  mongoose = require('mongoose'),
-  PORT = 3030,
+  PORT = process.env.PORT || 3030,
   usersRoutes = require('./routes/users.js'),
-  // beerRoutes = require('./routes/beers.js')
+  beersRoutes = require('./routes/beers.js'),
   path = require('path')
 
 const app = express()
 
+// MongoDB
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const mongoDbUri = `mongodb+srv://${process.env.MONGODB_ADMIN}:${process.env.MONGODB_PW}@cluster0.x2ejlho.mongodb.net/?retryWrites=true&w=majority`;
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(mongoDbUri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+run().catch(console.dir);
+
 // Middleware
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'client', 'build')))
+
+// Set API specific root
+app.get('/api', (req, res) => {
+  res.json({ message: 'API ROOT' })
+})
+
+// API Routes
+app.use('/api/users', usersRoutes)
+app.use('/api/beers', beersRoutes)
 
 // Temporary Database
 const database = {
@@ -50,11 +89,11 @@ app.get('/', (req, res) => {
 // Signin
 app.post('/signin', (req, res) => {
   // Load hash from your password DB.
-  bcrypt.compare("apples", "$2a$10$c4iMGUnqh3y0.EIRPWXePOr3SW7i6HXG4OZ6BI5U1fRwjl4/XV8gG", function(err, res) {
+  bcrypt.compare('apples', '$2a$10$c4iMGUnqh3y0.EIRPWXePOr3SW7i6HXG4OZ6BI5U1fRwjl4/XV8gG', function(err, res) {
     // res == true
     console.log('First guess', res)
   });
-  bcrypt.compare("seeya", "$2a$10$c4iMGUnqh3y0.EIRPWXePOr3SW7i6HXG4OZ6BI5U1fRwjl4/XV8gG", function(err, res) {
+  bcrypt.compare('seeya', '$2a$10$c4iMGUnqh3y0.EIRPWXePOr3SW7i6HXG4OZ6BI5U1fRwjl4/XV8gG', function(err, res) {
     // res = false
     console.log('Second guess', res)
 });
@@ -117,15 +156,15 @@ app.put('/image', (req, res) => {
 })
 
 // Hashing passwords logic
-bcrypt.hash("aloha", null, null, function(err, hash) {
+bcrypt.hash('aloha', null, null, function(err, hash) {
   // Store hash in your password DB.
 });
 
 // // Load hash from your password DB.
-// bcrypt.compare("aloha", hash, function(err, res) {
+// bcrypt.compare('aloha', hash, function(err, res) {
 //     // res == true
 // });
-// bcrypt.compare("seeya", hash, function(err, res) {
+// bcrypt.compare('seeya', hash, function(err, res) {
 //     // res = false
 // });
 
