@@ -1,4 +1,8 @@
 const User = require('../models/User.js')
+const {client, myMongoDb} = require('../db.js')
+
+const usersCollection = myMongoDb.collection('users')
+
 
 module.exports = {
   // Find all users
@@ -16,7 +20,7 @@ module.exports = {
     })
   },
   // Create new User
-  create: (req, res) => {
+  create: async (req, res) => {
     // User.create(req.body, (err, newUser) => {
     //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
     //   // const token = signToken(newUser)
@@ -25,20 +29,23 @@ module.exports = {
 
     const { name, email, password } = req.body
 
-    const newUser = new User ({
-      name: name,
-      email: email,
-      password: password,
-    })
-    
-    newUser.save()
-      .then(() => res.send({
-        message: `SUCCESS! Created newUser!`
-      }))
-      .catch((err) => res.send({
+    try {
+      const newUser = await new User.create({
+        name: name,
+        email: email,
+        password: password,
+      })
+      newUser.save()
+      return res.json({
+        message: `SUCCESS! Created ${newUser.name} profile successfully!`
+      })
+    } catch (err) {
+      res.json({
         message: `ERROR! Data not saved.`,
-        error: err
-      }))
+        error: err,
+        response: res
+      })
+    }
   },
   // Edit User
   update: (req, res) => {

@@ -10,6 +10,7 @@ const
   path = require('path')
 
 connectToMongoDb().catch(console.dir);
+
 const app = express()
 
 // Middleware
