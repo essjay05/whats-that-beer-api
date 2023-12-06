@@ -20,7 +20,7 @@ module.exports = {
     })
   },
   // Create new User
-  create: async (req, res) => {
+  create: (req, res) => {
     // User.create(req.body, (err, newUser) => {
     //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
     //   // const token = signToken(newUser)
@@ -28,9 +28,10 @@ module.exports = {
     // })
 
     const { name, email, password } = req.body
+    console.log(req.body)
 
     try {
-      const newUser = await new User.create({
+      const newUser = new User.create({
         name: name,
         email: email,
         password: password,
