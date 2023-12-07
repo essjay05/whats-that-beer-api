@@ -20,7 +20,7 @@ module.exports = {
     })
   },
   // Create new User
-  create: (req, res) => {
+  create: async (req, res) => {
     // User.create(req.body, (err, newUser) => {
     //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
     //   // const token = signToken(newUser)
@@ -28,14 +28,17 @@ module.exports = {
     // })
 
     const { name, email, password } = req.body
+    console.log('req.body:')
     console.log(req.body)
-
+    
     try {
-      const newUser = new User.create({
+      const newUser = await new User.create({
         name: name,
         email: email,
         password: password,
       })
+      console.log('newUser')
+      console.log(newUser)
       newUser.save()
       return res.json({
         message: `SUCCESS! Created ${newUser.name} profile successfully!`
