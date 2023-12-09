@@ -21,35 +21,37 @@ module.exports = {
   },
   // Create new User
   create: async (req, res) => {
-    // User.create(req.body, (err, newUser) => {
-    //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-    //   // const token = signToken(newUser)
-    //   res.json({ message: `SUCCESS created newUser: ${newUser}`})
-    // })
-
-    const { name, email, password } = req.body
-    console.log('req.body:')
-    console.log(req.body)
+      const { name, email, password } = req.body
     
-    try {
-      const newUser = await new User.create({
-        name: name,
-        email: email,
-        password: password,
-      })
-      console.log('newUser')
-      console.log(newUser)
-      newUser.save()
-      return res.json({
-        message: `SUCCESS! Created ${newUser.name} profile successfully!`
-      })
-    } catch (err) {
-      res.json({
-        message: `ERROR! Data not saved.`,
-        error: err,
-        response: res
-      })
-    }
+      try {
+        const newUser = new User ({ name, email, password })
+        await newUser.save()
+        res.send(newUser)
+      } catch (err) {
+        console.error(err)
+        res.status(500).send(err)
+      }
+    
+    // // User.create(req.body, (err, newUser) => {
+    // //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
+    // //   // const token = signToken(newUser)
+    // //   res.json({ message: `SUCCESS created newUser: ${newUser}`})
+    // // })
+
+    // const { name, email, password } = req.body
+    // console.log('req.body:')
+    // console.log(req.body)
+    
+    // const newUser = new User({
+    //   name: name,
+    //   email: email,
+    //   password: password,
+    // })
+    // console.log('newUser')
+    // console.log(newUser)
+    // newUser.save()
+    //   .then(() => console.log(`SUCCESS! Created new User! res: ${res}`))
+    //   .catch((err) => console.log(`Error! Res: ${res} | Error: ${err}`))
   },
   // Edit User
   update: (req, res) => {
