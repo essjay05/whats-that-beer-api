@@ -2,12 +2,18 @@ require('dotenv').config()
 
 const 
   express = require('express'),
+  bodyParser = require('body-parser'),
+  cors = require('cors'),
   bcrypt = require('bcrypt-nodejs'),
   PORT = process.env.PORT || 3030,
   { client, connectToMongoDb } = require('./db.js'),
   usersRoutes = require('./routes/users.js'),
   beersRoutes = require('./routes/beers.js'),
   path = require('path')
+
+var corsOptions  = {
+  origin: `http://localhost:${PORT}`
+}
 
 connectToMongoDb().catch(console.dir);
 
@@ -16,6 +22,8 @@ const app = express()
 // Middleware
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'client', 'build')))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Set API specific root
 app.get('/api', (req, res) => {
