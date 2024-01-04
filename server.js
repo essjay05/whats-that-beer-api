@@ -6,7 +6,7 @@ const
   cors = require('cors'),
   bcrypt = require('bcrypt-nodejs'),
   PORT = process.env.PORT || 3030,
-  { client, connectToMongoDb } = require('./db.js'),
+  { client, myMongoDb, connectToMongoDb } = require('./db.js'),
   usersRoutes = require('./routes/users.js'),
   beersRoutes = require('./routes/beers.js'),
   path = require('path')
@@ -16,6 +16,8 @@ var corsOptions  = {
 }
 
 connectToMongoDb().catch(console.dir);
+
+// console.log(myMongoDb)
 
 const app = express()
 
