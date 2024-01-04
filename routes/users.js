@@ -1,18 +1,23 @@
 const
   express = require('express'),
   User = require ('../models/User.js'),
-  usersRouter = new express.Router()
+  usersRouter = new express.Router(),
+  { client } = require('../db.js'),
+  myDb = client.db('whats-that-beer-db'),
+  usersColl = myDb.collection('users')
   // usersCtrl = require('../controllers/users.js')
   // Token for authentication
 
 // Create New User
 usersRouter.post('/', async (req, res) => {
-  const { name, email, password } = req.body
+  const doc = req.body
+  
 
   try {
-    const newUser = new User({ name, email, password })
-    console.log(`newUser: ${newUser}`)
-    await newUser.save()
+    // const newUser = new User({ name, email, password })
+    // console.log(`newUser: ${newUser}`)
+    // await newUser.save()
+    const result = await usersColl.insertOne(doc)
     res.send({
       message: `Success! New User created.`
     })
