@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-// // MongoDB
+// MongoDB
 const { MongoClient } = require('mongodb');
 
 const mongoDbUri = `mongodb+srv://${process.env.MONGODB_ADMIN}:${process.env.MONGODB_PW}@cluster0.sut8v7b.mongodb.net/?retryWrites=true&w=majority`;
@@ -9,6 +9,10 @@ const connectToMongoDb = async () => {
   const client = new MongoClient(mongoDbUri)
   try {
     await client.connect()
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
     await listDatabases(client)
   } catch (err) {
     console.error(err)
@@ -17,8 +21,6 @@ const connectToMongoDb = async () => {
   }
   
 }
-
-connectToMongoDb().catch(console.error)
 
 const listDatabases = async (client) => {
   const databasesList = await client.db().admin().listDatabases()
@@ -55,8 +57,6 @@ const listDatabases = async (client) => {
 
 // const myMongoDb = client.db(process.env.DB)
 
-// module.exports = {
-//   client,
-//   connectToMongoDb,
-//   myMongoDb,
-// }
+module.exports = {
+  connectToMongoDb,
+}

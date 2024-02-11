@@ -15,7 +15,8 @@ var corsOptions  = {
   origin: `http://localhost:${PORT}`
 }
 
-connectToMongoDb().catch(console.dir);
+// connectToMongoDb().catch(console.dir);
+connectToMongoDb().catch(console.error)
 
 // console.log(myMongoDb)
 

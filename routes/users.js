@@ -1,10 +1,10 @@
 const
   express = require('express'),
   User = require ('../models/User.js'),
-  usersRouter = new express.Router(),
-  { client } = require('../db.js'),
-  myDb = client.db('whats-that-beer-db'),
-  usersColl = myDb.collection('users')
+  usersRouter = new express.Router()
+  // { client } = require('../db.js'),
+  // myDb = client.db('whats-that-beer-db'),
+  // usersColl = myDb.collection('users')
   // usersCtrl = require('../controllers/users.js')
   // Token for authentication
 
