@@ -4,6 +4,7 @@ const
     beerId: { type: String, required: true },
     name: { type: String },
     abv: { type: String },
+    type: { type: String},
     brewery: { type: String},
     description: { type: String},
     photos: [{

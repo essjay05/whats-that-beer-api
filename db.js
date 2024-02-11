@@ -1,12 +1,13 @@
 require('dotenv').config()
 
 // MongoDB
-const { MongoClient } = require('mongodb');
+const { MongoClient } = require('mongodb')
 
 const mongoDbUri = `mongodb+srv://${process.env.MONGODB_ADMIN}:${process.env.MONGODB_PW}@cluster0.sut8v7b.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(mongoDbUri)
 
 const connectToMongoDb = async () => {
-  const client = new MongoClient(mongoDbUri)
+
   try {
     await client.connect()
     // Send a ping to confirm a successful connection
@@ -14,6 +15,13 @@ const connectToMongoDb = async () => {
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
     await listDatabases(client)
+    await createBeer(client, {
+      name: "Test Beer 1",
+      description: "A cheap made up ale",
+      type: "Pilsner",
+      brewery: "Budweiser",
+      abv: "4%"
+    })
   } catch (err) {
     console.error(err)
   } finally {
@@ -28,6 +36,12 @@ const listDatabases = async (client) => {
   databasesList.databases.forEach( db => {
     console.log(`- ${db.name}`)
   })
+}
+
+// Beer CRUD
+const createBeer = async (client, newBeer) => {
+  const result = await client.db('whats-that-beer-db').collection('beersAndReviews').insertOne(newBeer)
+  console.log(`New beer was created with the following id: ${result.insertedId}`)
 }
 
 
@@ -58,5 +72,7 @@ const listDatabases = async (client) => {
 // const myMongoDb = client.db(process.env.DB)
 
 module.exports = {
+  mongoDbUri,
+  client,
   connectToMongoDb,
 }
