@@ -15,13 +15,13 @@ const connectToMongoDb = async () => {
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
     await listDatabases(client)
-    await createBeer(client, {
-      name: "Test Beer 1",
-      description: "A cheap made up ale",
-      type: "Pilsner",
-      brewery: "Budweiser",
-      abv: "4%"
-    })
+    // await createBeer(client, {
+    //   name: "Test Beer 1",
+    //   description: "A cheap made up ale",
+    //   type: "Pilsner",
+    //   brewery: "Budweiser",
+    //   abv: "4%"
+    // })
   } catch (err) {
     console.error(err)
   } finally {
@@ -39,10 +39,7 @@ const listDatabases = async (client) => {
 }
 
 // Beer CRUD
-const createBeer = async (client, newBeer) => {
-  const result = await client.db('whats-that-beer-db').collection('beersAndReviews').insertOne(newBeer)
-  console.log(`New beer was created with the following id: ${result.insertedId}`)
-}
+
 
 
 // // Create a MongoClient with a MongoClientOptions object to set the Stable API version

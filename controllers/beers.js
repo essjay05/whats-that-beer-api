@@ -1,4 +1,15 @@
-const User = require('../models/Beer.js')
+const 
+  Beer = require('../models/Beer.js'),
+  { MongoClient } = require('mongodb'),
+  { mongoDbUri } = require('../db.js')
+
+const client = new MongoClient(mongoDbUri)
+
+const createBeer = async (client, newBeer) => {
+  const result = await client.db('whats-that-beer-db').collection('beersAndReviews').insertOne(newBeer)
+  console.log(`New beer was created with the following id: ${result.insertedId}`)
+}
+
 
 module.exports = {
   // Get all beers
@@ -16,12 +27,9 @@ module.exports = {
     })
   },
   // Create new Beer
-  create: (req, res) => {
-    Beer.create(req.body, (err, newBeer) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      // const token = signToken(newBeer)
-      res.json({ message: `SUCCESS created newBeer: ${newBeer}`})
-    })
+  create: async (req, res) => {
+    const result = await createBeer(client, req.body)
+    res.json({ message: `SUCCESS: New beer was created with the following id: ${result.insertedId}`})
   },
   // Edit Beer
   update: (req, res) => {
