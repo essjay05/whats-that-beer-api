@@ -5,6 +5,8 @@ const { MongoClient } = require('mongodb')
 
 const mongoDbUri = `mongodb+srv://${process.env.MONGODB_ADMIN}:${process.env.MONGODB_PW}@cluster0.sut8v7b.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(mongoDbUri)
+const wtbDbName = 'whats-that-beer-db'
+const beerCollection = 'beersAndReviews'
 
 const connectToMongoDb = async () => {
 
@@ -34,9 +36,13 @@ const listDatabases = async (client) => {
 
 // Beer CRUD
 // Create Beer:
-const createBeer = async (client, newBeer) => {
-  const result = await client.db('whats-that-beer-db').collection('beersAndReviews').insertOne(newBeer)
-  console.log(`New beer was created with the following id: ${result.insertedId}`)
+// const createBeer = async (client, newBeer) => {
+//   const result = await client.db('whats-that-beer-db').collection('beersAndReviews').insertOne(newBeer)
+//   console.log(`New beer was created with the following id: ${result.insertedId}`)
+// }
+
+const createMultipleBeers = async (client, newBeers) => {
+  const result = await client.db('whats-that-beer-db').collection('beersAndReviews')
 }
 
 
@@ -70,4 +76,6 @@ module.exports = {
   mongoDbUri,
   client,
   connectToMongoDb,
+  wtbDbName,
+  beerCollection
 }
