@@ -1,13 +1,17 @@
 const 
   Beer = require('../models/Beer.js'),
   { MongoClient } = require('mongodb'),
-  { mongoDbUri, wtbDbName, beerCollection } = require('../db.js')
+  { mongoDbUri } = require('../db.js')
 
 const client = new MongoClient(mongoDbUri)
 
 const createBeer = async (client, newBeer) => {
-  const result = await client.db(wtbDbName).collection(beerCollection).insertOne(newBeer)
+  const result = await client.db(process.env.DB_NAME).collection(process.env.BEER_COLLECTION).insertOne(newBeer)
   console.log(`New beer was created with the following id: ${result.insertedId}`)
+}
+
+const createMultipleBeers = async (client, newBeers) => {
+  const result = await client.db('whats-that-beer-db').collection('beersAndReviews')
 }
 
 module.exports = {
@@ -27,15 +31,13 @@ module.exports = {
   },
   // Create new Beer
   create: async (req, res) => {
+    const newBeer = req.body
     try {
-      const newBeer = req.body
-      console.log('newBeer:')
-      console.log(newBeer)
       await createBeer(client, newBeer)
     } catch (err) {
       console.error(err)
     } finally {
-      res.json({ message: `SUCCESS: New beer was created with the following id: ${res.insertedId}`})
+      res.json({ message: `SUCCESS: New beer was created!`, payload: newBeer })
     }
   },
   // Edit Beer

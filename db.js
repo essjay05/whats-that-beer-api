@@ -5,8 +5,6 @@ const { MongoClient } = require('mongodb')
 
 const mongoDbUri = `mongodb+srv://${process.env.MONGODB_ADMIN}:${process.env.MONGODB_PW}@cluster0.sut8v7b.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(mongoDbUri)
-const wtbDbName = 'whats-that-beer-db'
-const beerCollection = 'beersAndReviews'
 
 const connectToMongoDb = async () => {
 
@@ -34,48 +32,8 @@ const listDatabases = async (client) => {
   })
 }
 
-// Beer CRUD
-// Create Beer:
-// const createBeer = async (client, newBeer) => {
-//   const result = await client.db('whats-that-beer-db').collection('beersAndReviews').insertOne(newBeer)
-//   console.log(`New beer was created with the following id: ${result.insertedId}`)
-// }
-
-const createMultipleBeers = async (client, newBeers) => {
-  const result = await client.db('whats-that-beer-db').collection('beersAndReviews')
-}
-
-
-// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// const client = new MongoClient(mongoDbUri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   }
-// });
-
-// const connectToMongoDb = async () => {
-//   try {
-//     // Connect the client to the server	(optional starting in v4.7)
-//     await client.connect();
-//     // Send a ping to confirm a successful connection
-//     await client.db("admin").command({ ping: 1 });
-//     console.log('client:')
-//     console.log(client)
-//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     await client.close();
-//   }
-// }
-
-// const myMongoDb = client.db(process.env.DB)
-
 module.exports = {
   mongoDbUri,
   client,
-  connectToMongoDb,
-  wtbDbName,
-  beerCollection
+  connectToMongoDb
 }
