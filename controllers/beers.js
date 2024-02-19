@@ -4,30 +4,25 @@ const
   BeerModel = require('../models/Beer.js'),
   { MongoClient } = require('mongodb'),
   { mongoDbUri } = require('../db.js'),
-  wtbDB = process.env.DB_NAME,
-  beerCollection = process.env.BEER_COLLECTION
+  wtbDBName = process.env.DB_NAME,
+  beerCollName = process.env.BEER_COLLECTION
 
 const client = new MongoClient(mongoDbUri)
+const wtbDB = client.db(wtbDBName)
+const beerCollection = wtbDB.collection(beerCollName)
 
 const createBeer = async (client, newBeer) => {
-  const result = await client.db(wtbDB)
-    .collection(beerCollection)
-    .insertOne(newBeer)
+  const result = await beerCollection.insertOne(newBeer)
   console.log(`New Model was created with the following id: ${result.insertedId}`)
 }
 
 const createMultipleBeers = async (client, newBeers) => {
-  const result = await client.db(wtbDB)
-    .collection(beerCollection)
-    .insertMany(newBeers)
+  const result = await beerCollection.insertMany(newBeers)
   console.log(result.insertedIds)
-  
 }
 
 const findOneBeerByName = async (client, nameOfBeer) => {
-  const result = await client.db(wtbDB)
-    .collection(beerCollection)
-    .find(nameOfBeer)
+  const result = await beerCollection.find(nameOfBeer)
   if (result) {
     console.log(`SUCCESS! Found Beer by name:`)
     console.log(result)
@@ -37,9 +32,7 @@ const findOneBeerByName = async (client, nameOfBeer) => {
 }
 
 const findAllBeers = async (client, nameOfBeer) => {
-  const result = await client.db(wtbDB)
-    .collection(beerCollection)
-    .find()
+  const result = await beerCollection.find()
   if (result) {
     console.log(`SUCCESS! Found all beers:`)
     console.log(result)
@@ -51,8 +44,13 @@ const findAllBeers = async (client, nameOfBeer) => {
 module.exports = {
   // Get all Beers
   index: (req, res) => {
-    findAllBeers()
-      .then(beers => res.json(beers))
+    // findAllBeers()
+    BeerModel.find()
+      .then((beers) => {
+        console.log(`Success found beers:`)
+        console.log(beers)
+        res.json(beers)
+      })
       .catch(err => res.json(err))
   },
   // Find 1 beer
@@ -61,8 +59,8 @@ module.exports = {
     console.log(`Show endpoint beerName provided:`)
     console.log(beerName)
     try {
-      await client.db(wtbDB)
-      .collection(beerCollection)
+      await wtbDB
+      .collection(beerCollName)
       .find(beerName)
     } catch (err) {
       console.error(err)
