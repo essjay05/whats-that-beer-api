@@ -37,35 +37,6 @@ app.get('/api', (req, res) => {
 app.use('/api/users', usersRoutes)
 app.use('/api/beers', beersRoutes)
 
-// Temporary Database
-const database = {
-  users: [
-    {
-      id: '123',
-      username: 'testuser123',
-      email: 'testuser123@gmail.com',
-      password: 'cookies', 
-      entries: 0,
-      joined: new Date()
-    },
-    {
-      id: '124',
-      username: 'user124',
-      email: 'user123@gmail.com',
-      password: 'bananas', 
-      entries: 0,
-      joined: new Date()
-    },
-  ],
-  login: [
-    {
-      id: '987',
-      hash: '',
-      email: 'john@gmail.com'
-    }
-  ]
-}
-
 // Routes
 // Home
 app.get('/', (req, res) => {
@@ -153,8 +124,6 @@ bcrypt.hash('aloha', null, null, function(err, hash) {
 // bcrypt.compare('seeya', hash, function(err, res) {
 //     // res = false
 // });
-
-
 
 app.listen(PORT, () => {
   console.log(`App Server is listening on PORT:${PORT}`)

@@ -1,46 +1,69 @@
+require('dotenv').config()
+
 const 
-  Beer = require('../models/Beer.js'),
+  BeerModel = require('../models/Beer.js'),
   { MongoClient } = require('mongodb'),
-  { mongoDbUri } = require('../db.js')
+  { mongoDbUri } = require('../db.js'),
+  wtbDB = process.env.DB_NAME,
+  beerCollection = process.env.BEER_COLLECTION
 
 const client = new MongoClient(mongoDbUri)
 
 const createBeer = async (client, newBeer) => {
-  const result = await client.db(process.env.DB_NAME)
-    .collection(process.env.BEER_COLLECTION)
+  const result = await client.db(wtbDB)
+    .collection(beerCollection)
     .insertOne(newBeer)
-  console.log(`New beer was created with the following id: ${result.insertedId}`)
+  console.log(`New Model was created with the following id: ${result.insertedId}`)
 }
 
 const createMultipleBeers = async (client, newBeers) => {
-  const result = await client.db(process.env.DB_NAME)
-    .collection(process.env.BEER_COLLECTION)
+  const result = await client.db(wtbDB)
+    .collection(beerCollection)
     .insertMany(newBeers)
-  console.log(`${result.insertedCount} new beers created with the following ids:`)
   console.log(result.insertedIds)
+  
 }
 
 const findOneBeerByName = async (client, nameOfBeer) => {
-  const result = await client.db(process.env.DB_NAME)
-    .collection(process.env.BEER_COLLECTION)
-    .findOne({ name: nameOfBeer})
-  console.log(`SUCCESS! Found beer by name:`)
-  console.log(result)
+  const result = await client.db(wtbDB)
+    .collection(beerCollection)
+    .find(nameOfBeer)
+  if (result) {
+    console.log(`SUCCESS! Found Beer by name:`)
+    console.log(result)
+  } else {
+    console.log(`ERROR: No Beer found.`)
+  }
+}
+
+const findAllBeers = async (client, nameOfBeer) => {
+  const result = await client.db(wtbDB)
+    .collection(beerCollection)
+    .find()
+  if (result) {
+    console.log(`SUCCESS! Found all beers:`)
+    console.log(result)
+  } else {
+    console.log(`ERROR: No Beer found.`)
+  }
 }
 
 module.exports = {
-  // Get all beers
+  // Get all Beers
   index: (req, res) => {
-    Beer.find({}, (err, beers) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      res.json({ message: 'SUCCESS', payload: beers })
-    })
+    findAllBeers()
+      .then(beers => res.json(beers))
+      .catch(err => res.json(err))
   },
   // Find 1 beer
   show: async (req, res) => {
-    const beerName = req.params.name
+    const beerName = req.body.name
+    console.log(`Show endpoint beerName provided:`)
+    console.log(beerName)
     try {
-      await findOneBeerByName(client, beerName)
+      await client.db(wtbDB)
+      .collection(beerCollection)
+      .find(beerName)
     } catch (err) {
       console.error(err)
     } finally {
