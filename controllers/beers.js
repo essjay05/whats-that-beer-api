@@ -6,14 +6,26 @@ const
 const client = new MongoClient(mongoDbUri)
 
 const createBeer = async (client, newBeer) => {
-  const result = await client.db(process.env.DB_NAME).collection(process.env.BEER_COLLECTION).insertOne(newBeer)
+  const result = await client.db(process.env.DB_NAME)
+    .collection(process.env.BEER_COLLECTION)
+    .insertOne(newBeer)
   console.log(`New beer was created with the following id: ${result.insertedId}`)
 }
 
 const createMultipleBeers = async (client, newBeers) => {
-  const result = await client.db(process.env.DB_NAME).collection(process.env.BEER_COLLECTION).insertMany(newBeers)
+  const result = await client.db(process.env.DB_NAME)
+    .collection(process.env.BEER_COLLECTION)
+    .insertMany(newBeers)
   console.log(`${result.insertedCount} new beers created with the following ids:`)
   console.log(result.insertedIds)
+}
+
+const findOneBeerByName = async (client, nameOfBeer) => {
+  const result = await client.db(process.env.DB_NAME)
+    .collection(process.env.BEER_COLLECTION)
+    .findOne({ name: nameOfBeer})
+  console.log(`SUCCESS! Found beer by name:`)
+  console.log(result)
 }
 
 module.exports = {
@@ -25,11 +37,19 @@ module.exports = {
     })
   },
   // Find 1 beer
-  show: (req, res) => {
-    Beer.findById(req.params.id, (err, beer) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      res.json({ message: 'SUCCESS', payload: beer })
-    })
+  show: async (req, res) => {
+    const beerName = req.params.name
+    try {
+      await findOneBeerByName(client, beerName)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      res.json({ message: `SUCCESS: Beer was found!`, payload: beerName })
+    }
+    // Beer.findById(req.params.name, (err, beer) => {
+    //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
+    //   res.json({ message: 'SUCCESS', payload: beer })
+    // })
   },
   // Create new Beer
   create: async (req, res) => {
