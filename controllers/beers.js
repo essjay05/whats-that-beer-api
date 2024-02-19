@@ -11,7 +11,9 @@ const createBeer = async (client, newBeer) => {
 }
 
 const createMultipleBeers = async (client, newBeers) => {
-  const result = await client.db('whats-that-beer-db').collection('beersAndReviews')
+  const result = await client.db('whats-that-beer-db').collection(process.env.BEER_COLLECTION).insertMany(newBeers)
+  console.log(`${result.insertedCount} new beers created with the following ids:`)
+  console.log(result.insertedIds)
 }
 
 module.exports = {
@@ -38,6 +40,17 @@ module.exports = {
       console.error(err)
     } finally {
       res.json({ message: `SUCCESS: New beer was created!`, payload: newBeer })
+    }
+  },
+  // Create multiple new Beers
+  createMany: async (req, res) => {
+    const newBeers = req.body
+    try {
+      await createMultipleBeers(client, newBeers)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      res.json({ message: `SUCCESS: New beers were created!`, payload: newBeers })
     }
   },
   // Edit Beer
