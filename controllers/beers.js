@@ -31,27 +31,17 @@ const findOneBeerByName = async (client, nameOfBeer) => {
   }
 }
 
-const findAllBeers = async (client, nameOfBeer) => {
-  const result = await beerCollection.find()
-  if (result) {
-    console.log(`SUCCESS! Found all beers:`)
-    console.log(result)
-  } else {
-    console.log(`ERROR: No Beer found.`)
-  }
-}
-
 module.exports = {
   // Get all Beers
-  index: (req, res) => {
+  index: async (req, res) => {
     // findAllBeers()
-    BeerModel.find()
-      .then((beers) => {
-        console.log(`Success found beers:`)
-        console.log(beers)
-        res.json(beers)
-      })
-      .catch(err => res.json(err))
+    try {
+      const cursor = beerCollection.find({})
+      const allBeers = await cursor.toArray()
+      res.status(200).json({ message: `Success! All beers found.`, payload: allBeers})
+    } catch(err) {
+      console.error(err)
+    }
   },
   // Find 1 beer
   show: async (req, res) => {
