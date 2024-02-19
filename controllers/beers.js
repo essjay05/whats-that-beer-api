@@ -11,7 +11,7 @@ const createBeer = async (client, newBeer) => {
 }
 
 const createMultipleBeers = async (client, newBeers) => {
-  const result = await client.db('whats-that-beer-db').collection(process.env.BEER_COLLECTION).insertMany(newBeers)
+  const result = await client.db(process.env.DB_NAME).collection(process.env.BEER_COLLECTION).insertMany(newBeers)
   console.log(`${result.insertedCount} new beers created with the following ids:`)
   console.log(result.insertedIds)
 }
