@@ -12,6 +12,9 @@ beersRouter.get('/', beersCtrl.index)
 // CREATE
 beersRouter.post('/', beersCtrl.create)
 
+// CREATE MANY
+beersRouter.post('/multiple/', beersCtrl.createMany)
+
 // SHOW (Find one)
 beersRouter.get('/:id', beersCtrl.show)
 
