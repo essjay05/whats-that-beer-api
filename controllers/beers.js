@@ -52,9 +52,6 @@ module.exports = {
   show: async (req, res) => {
     const beerId = req.params.id
     const beerObjId = new ObjectId(beerId)
-    console.log(`beerObjId:`)
-    console.log(beerObjId)
-    console.log(req.params)
     try {
       const foundBeer = await beerCollection.findOne({ _id: beerObjId })
       console.log(foundBeer)
