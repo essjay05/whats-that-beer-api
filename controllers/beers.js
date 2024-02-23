@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const 
   BeerModel = require('../models/Beer.js'),
-  { MongoClient } = require('mongodb'),
+  { MongoClient, ObjectId } = require('mongodb'),
   { mongoDbUri } = require('../db.js'),
   wtbDBName = process.env.DB_NAME,
   beerCollName = process.env.BEER_COLLECTION
@@ -21,8 +21,8 @@ const createMultipleBeers = async (client, newBeers) => {
   console.log(result.insertedIds)
 }
 
-const findOneBeerByName = async (client, nameOfBeer) => {
-  const result = await beerCollection.find(nameOfBeer)
+const findBeerByName = async (client, nameOfBeer) => {
+  const result = await beerCollection.find({ name: nameOfBeer}).limit(5)
   if (result) {
     console.log(`SUCCESS! Found Beer by name:`)
     console.log(result)
@@ -36,7 +36,9 @@ module.exports = {
   index: async (req, res) => {
     // findAllBeers()
     try {
-      const cursor = beerCollection.find({})
+      // Name: 1 returns in alpha order (-1 for reverse)
+      // abv: -1 returns reverse order (strongest)
+      const cursor = beerCollection.find({}).sort({ name: 1 }).limit(5)
       const allBeers = await cursor.toArray()
       res.status(200).json({ 
         message: `Success! ${allBeers.length} beer${allBeers.length > 1 ? 's': ''} found.`,
@@ -49,19 +51,21 @@ module.exports = {
   // Find 1 beer
   show: async (req, res) => {
     const beerId = req.params.id
+    const beerObjId = new ObjectId(beerId)
+    console.log(`beerObjId:`)
+    console.log(beerObjId)
+    console.log(req.params)
     try {
-      const foundResults = beerCollection.findOne({}, beerId)
-      for await( const doc of foundResults) {
-        console.log(doc)
-      }
-      res.status(200).json({ message: `SUCCESS: Beer was found!`, payload: foundResults })
+      const foundBeer = await beerCollection.findOne({ _id: beerObjId })
+      console.log(foundBeer)
+      res.status(200).json({
+        message: `Successfully found beer!`,
+        payload: foundBeer
+      })
+      
     } catch (err) {
       console.error(err)
     }
-    // Beer.findById(req.params.name, (err, beer) => {
-    //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-    //   res.json({ message: 'SUCCESS', payload: beer })
-    // })
   },
   // Create new Beer
   create: async (req, res) => {
