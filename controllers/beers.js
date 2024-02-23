@@ -38,24 +38,25 @@ module.exports = {
     try {
       const cursor = beerCollection.find({})
       const allBeers = await cursor.toArray()
-      res.status(200).json({ message: `Success! All beers found.`, payload: allBeers})
+      res.status(200).json({ 
+        message: `Success! ${allBeers.length} beer${allBeers.length > 1 ? 's': ''} found.`,
+        payload: allBeers
+      })
     } catch(err) {
       console.error(err)
     }
   },
   // Find 1 beer
   show: async (req, res) => {
-    const beerName = req.body.name
-    console.log(`Show endpoint beerName provided:`)
-    console.log(beerName)
+    const beerId = req.params.id
     try {
-      await wtbDB
-      .collection(beerCollName)
-      .find(beerName)
+      const foundResults = beerCollection.findOne({}, beerId)
+      for await( const doc of foundResults) {
+        console.log(doc)
+      }
+      res.status(200).json({ message: `SUCCESS: Beer was found!`, payload: foundResults })
     } catch (err) {
       console.error(err)
-    } finally {
-      res.json({ message: `SUCCESS: Beer was found!`, payload: beerName })
     }
     // Beer.findById(req.params.name, (err, beer) => {
     //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
