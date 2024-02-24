@@ -38,7 +38,7 @@ module.exports = {
     try {
       // Name: 1 returns in alpha order (-1 for reverse)
       // abv: -1 returns reverse order (strongest)
-      const cursor = beerCollection.find({}).sort({ name: 1 }).limit(5)
+      const cursor = beerCollection.find({}).sort({ name: 1 })
       const allBeers = await cursor.toArray()
       res.status(200).json({ 
         message: `Success! ${allBeers.length} beer${allBeers.length > 1 ? 's': ''} found.`,
@@ -61,6 +61,22 @@ module.exports = {
       })
       
     } catch (err) {
+      console.error(err)
+    }
+  },
+  // Find beers by name:
+  searchByAbv: async (req,res) => {
+    const beerAbv = req.params.abv
+    try {
+      // Name: 1 returns in alpha order (-1 for reverse)
+      // abv: -1 returns reverse order (strongest)
+      const cursor = beerCollection.find({abv: `${beerAbv}%`}).sort({ name: 1 })
+      const foundBeers = await cursor.toArray()
+      res.status(200).json({ 
+        message: `Success! ${foundBeers.length} beer${foundBeers.length > 1 ? 's': ''} found.`,
+        payload: foundBeers
+      })
+    } catch(err) {
       console.error(err)
     }
   },
