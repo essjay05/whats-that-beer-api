@@ -18,6 +18,9 @@ beersRouter.post('/multiple/', beersCtrl.createMany)
 // SHOW (Find one)
 beersRouter.get('/:id', beersCtrl.show)
 
+// SEARCH (Find matching name provided)
+beersRouter.get('/search/:abv', beersCtrl.searchByAbv)
+
 // UPDATE / Like
 beersRouter.patch('/:id', beersCtrl.update)
 
