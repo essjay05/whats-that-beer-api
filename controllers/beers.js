@@ -61,6 +61,9 @@ module.exports = {
       })
       
     } catch (err) {
+      res.json({
+        message: `No beer found.`
+      })
       console.error(err)
     }
   },
@@ -102,16 +105,40 @@ module.exports = {
       res.json({ message: `SUCCESS: New beers were created!`, payload: newBeers })
     }
   },
-  // Edit Beer
-  update: (req, res) => {
-    Beer.findById(req.params.id, (err, updatedBeer) => {
-      if (!req.body.password) delete req.body.password
-      Object.assign(updatedBeer, req.body)
-      updatedBeer.save((err, updatedBeer) => {
-        if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-        res.json({ message: `SUCCESS profile is updated`, payload: updatedBeer })
+  // Update 1 Beer
+  update: async (req, res) => {
+    const beerId = req.params.id
+    const beerObjId = new ObjectId(beerId)
+    const beerUpdate = req.body
+    console.log(`Beer update:`)
+    console.log(beerUpdate)
+    try {
+      const result = await beerCollection.updateOne(
+        { _id: beerObjId },
+        { $set: beerUpdate }
+      )
+      console.log(result)
+      console.log(`Result:`)
+      console.log(result)
+      res.status(200).json({
+        message: `Successfully updated beer!`,
+        payload: result
       })
-    })
+      
+    } catch (err) {
+      res.json({
+        message: `No beer found.`
+      })
+      console.error(err)
+    }
+    // Beer.findById(req.params.id, (err, updatedBeer) => {
+    //   if (!req.body.password) delete req.body.password
+    //   Object.assign(updatedBeer, req.body)
+    //   updatedBeer.save((err, updatedBeer) => {
+    //     if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
+    //     res.json({ message: `SUCCESS profile is updated`, payload: updatedBeer })
+    //   })
+    // })
   },
   // Delete Beer
   destroy: (req, res) => {
