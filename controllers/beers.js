@@ -110,16 +110,13 @@ module.exports = {
     const beerId = req.params.id
     const beerObjId = new ObjectId(beerId)
     const beerUpdate = req.body
-    console.log(`Beer update:`)
-    console.log(beerUpdate)
+
     try {
       const result = await beerCollection.updateOne(
         { _id: beerObjId },
         { $set: beerUpdate }
       )
-      console.log(result)
-      console.log(`Result:`)
-      console.log(result)
+
       res.status(200).json({
         message: `Successfully updated beer!`,
         payload: result
@@ -131,14 +128,7 @@ module.exports = {
       })
       console.error(err)
     }
-    // Beer.findById(req.params.id, (err, updatedBeer) => {
-    //   if (!req.body.password) delete req.body.password
-    //   Object.assign(updatedBeer, req.body)
-    //   updatedBeer.save((err, updatedBeer) => {
-    //     if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-    //     res.json({ message: `SUCCESS profile is updated`, payload: updatedBeer })
-    //   })
-    // })
+
   },
   // Delete Beer
   destroy: (req, res) => {
