@@ -22,12 +22,29 @@ const createMultipleBeers = async (client, newBeers) => {
 }
 
 const findBeerByName = async (client, nameOfBeer) => {
-  const result = await beerCollection.find({ name: nameOfBeer}).limit(5)
+  const cursor = await beerCollection.find({ name: nameOfBeer}).limit(5)
   if (result) {
     console.log(`SUCCESS! Found Beer by name:`)
     console.log(result)
   } else {
     console.log(`ERROR: No Beer found.`)
+  }
+}
+
+const updateBeerById = async (client, beerId, updatedBeer) => {
+  const beerObjId = new ObjectId(beerId)
+  const result = await beerCollection.updateOne({ _id: beerObjId }, { $set: updatedBeer })
+}
+
+const upsertBeerByName = async (client, nameOfBeer, updatedBeer) => {
+  const result = await beerCollection.updateOne({ name: nameOfBeer }, { $set: updatedBeer}, { upsert: true })
+  
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`)
+  
+  if (result.upsertedCount > 0) {
+    console.log(`One document was inserted with the id ${result.upsertedId}.`)
+  } else {
+    console.log(`${result.modifiedCount} document(s) were updated.`)
   }
 }
 
@@ -105,8 +122,8 @@ module.exports = {
       res.json({ message: `SUCCESS: New beers were created!`, payload: newBeers })
     }
   },
-  // Update 1 Beer
-  update: async (req, res) => {
+  // Update 1 Beer by ID
+  updateOne: async (req, res) => {
     const beerId = req.params.id
     const beerObjId = new ObjectId(beerId)
     const beerUpdate = req.body
@@ -126,6 +143,25 @@ module.exports = {
       res.json({
         message: `No beer found.`
       })
+      console.error(err)
+    }
+
+  },
+  // Upsert (update 1 and/or insert)
+  upsert: async (req, res) => {
+    const beerName = req.params.name
+    const beerUpdate = req.body
+    console.log(`beerName: ${beerName}`)
+    console.log('beerUPdate is:')
+    console.log(beerUpdate)
+
+    try {
+      const result = await upsertBeerByName(client, beerName, beerUpdate)
+      res.status(200).json({
+        message: `Successfully updated beer!`,
+        payload: result
+      })
+    } catch (err) {
       console.error(err)
     }
 
