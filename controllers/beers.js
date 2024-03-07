@@ -31,6 +31,8 @@ const findBeerByName = async (client, nameOfBeer) => {
   }
 }
 
+
+
 const updateBeerById = async (client, beerId, updatedBeer) => {
   const beerObjId = new ObjectId(beerId)
   const result = await beerCollection.updateOne({ _id: beerObjId }, { $set: updatedBeer })
@@ -167,11 +169,23 @@ module.exports = {
 
   },
   // Delete Beer
-  destroy: (req, res) => {
-    Beer.findByIdAndRemove(req.params.id, (err, deletedBeer ) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      res.json({ message: `SUCCESS ${deletedBeer} has been deleted.`, payload: deletedBeer })
-    })
+  destroy: async (req, res) => {
+    const beerId = req.params.id
+    const beerObjId = new ObjectId(beerId)
+    try {
+      const foundBeer = await beerCollection.deleteOne({ _id: beerObjId })
+      console.log(foundBeer)
+      res.status(200).json({
+        message: `Successfully deleted beer!`,
+        payload: foundBeer
+      })
+      
+    } catch (err) {
+      res.json({
+        message: `No beer found.`
+      })
+      console.error(err)
+    }
   }
   // Authenticate TBD
 }
