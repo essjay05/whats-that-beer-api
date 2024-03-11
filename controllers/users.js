@@ -45,36 +45,6 @@ module.exports = {
           payload: newBeer
         })
       }
-    
-      // try {
-      //   const newUser = new User ({ name, email, password })
-      //   await newUsers.save()
-      //   res.send(newUser)
-      // } catch (err) {
-      //   console.error(err)
-      //   res.status(500).send(err)
-      // }
-    
-    // // Users.create(req.body, (err, newUser) => {
-    // //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-    // //   // const token = signToken(newUser)
-    // //   res.json({ message: `SUCCESS created newUser: ${newUser}`})
-    // // })
-
-    // const { name, email, password } = req.body
-    // console.log('req.body:')
-    // console.log(req.body)
-    
-    // const newUser = new User({
-    //   name: name,
-    //   email: email,
-    //   password: password,
-    // })
-    // console.log('newUser')
-    // console.log(newUser)
-    // newUsers.save()
-    //   .then(() => console.log(`SUCCESS! Created new User! res: ${res}`))
-    //   .catch((err) => console.log(`Error! Res: ${res} | Error: ${err}`))
   },
   // Edit User
   update: (req, res) => {

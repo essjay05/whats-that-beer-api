@@ -43,12 +43,7 @@ app.use('/api/beers', beersRoutes)
 app.get('/', (req, res) => {
   res.json(database.users)
 })
-
-// Signin
-app.post('/signin', async (req, res) => {
-
-})
-          
+      
 
 // User profile
 app.get('/profile/:id', (req, res) => {

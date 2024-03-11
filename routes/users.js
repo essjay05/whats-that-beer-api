@@ -10,23 +10,6 @@ const
 
 // Create New User
 usersRouter.post('/signup', usersCtrl.create)
-// usersRouter.post('/signup', async (req, res) => {
-//   const doc = req.body
-
-//   try {
-//     // const newUser = new User({ name, email, password })
-//     // console.log(`newUser: ${newUser}`)
-//     // await newUser.save()
-//     const result = await usersColl.insertOne(doc)
-//     res.send({
-//       message: `Success! New User created.`,
-//       payload: result
-//     })
-//   } catch (err) {
-//     console.error(err)
-//     res.status(500).send(err)
-//   }
-// })
 
 // Login user
 usersRouter.post('/login', async (req, res) => {
