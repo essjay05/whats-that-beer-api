@@ -15,5 +15,5 @@ const
       ref: 'User' }]
   }, { timestamps: true })
 
-  const Beer = mongoose.model('Beer', beerSchema)
+  const Beer = new mongoose.model('Beer', beerSchema)
   module.exports = Beer

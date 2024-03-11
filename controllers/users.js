@@ -1,38 +1,61 @@
-const User = require('../models/User.js')
-const {client, myMongoDb} = require('../db.js')
+require('dotenv').config()
 
-const usersCollection = myMongoDb.collection('users')
+const 
+  UserModel = require('../models/Users.js'),
+  { MongoClient, ObjectId } = require('mongodb'),
+  { mongoDbUri } = require('../db.js'),
+  wtbDBName = process.env.DB_NAME,
+  usersCollName = process.env.USER_COLLECTION
 
+const client = new MongoClient(mongoDbUri)
+const wtbDB = client.db(wtbDBName)
+const usersCollection = wtbDB.collection(usersCollName)
+
+const createUser = async (client, newUser) => {
+  const result = await usersCollection.insertOne(newUser)
+  console.log(`Success! New User was created with the following id: ${result.insertedId}.`)
+}
 
 module.exports = {
   // Find all users
   index: (req, res) => {
-    User.find({}, (err, users) => {
+    Users.find({}, (err, users) => {
       if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
       res.json({ message: 'SUCCESS', payload: users })
     })
   },
   // Find 1 user
   show: (req, res) => {
-    User.findById(req.params.id, (err, user) => {
+    Users.findById(req.params.id, (err, user) => {
       if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
       res.json({ message: 'SUCCESS', payload: user })
     })
   },
   // Create new User
   create: async (req, res) => {
-      const { name, email, password } = req.body
-    
+      const newBeer = req.body
+
       try {
-        const newUser = new User ({ name, email, password })
-        await newUser.save()
-        res.send(newUser)
+        await createUser(client, newBeer)
       } catch (err) {
         console.error(err)
-        res.status(500).send(err)
+      } finally {
+        res.json({
+          message: `SUCCESS: New user was registered!`,
+          payload: newBeer
+        })
       }
     
-    // // User.create(req.body, (err, newUser) => {
+      // try {
+      //   const newUser = new User ({ name, email, password })
+      //   await newUsers.save()
+      //   res.send(newUser)
+      // } catch (err) {
+      //   console.error(err)
+      //   res.status(500).send(err)
+      // }
+    
+    // // Users.create(req.body, (err, newUser) => {
     // //   if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
     // //   // const token = signToken(newUser)
     // //   res.json({ message: `SUCCESS created newUser: ${newUser}`})
@@ -49,16 +72,16 @@ module.exports = {
     // })
     // console.log('newUser')
     // console.log(newUser)
-    // newUser.save()
+    // newUsers.save()
     //   .then(() => console.log(`SUCCESS! Created new User! res: ${res}`))
     //   .catch((err) => console.log(`Error! Res: ${res} | Error: ${err}`))
   },
   // Edit User
   update: (req, res) => {
-    User.findById(req.params.id, (err, updatedUser) => {
+    Users.findById(req.params.id, (err, updatedUser) => {
       if (!req.body.password) delete req.body.password
       Object.assign(updatedUser, req.body)
-      updatedUser.save((err, updatedUser) => {
+      updatedUsers.save((err, updatedUser) => {
         if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
         res.json({ message: `SUCCESS profile is updated`, payload: updatedUser })
       })
@@ -66,7 +89,7 @@ module.exports = {
   },
   // Delete User
   destroy: (req, res) => {
-    User.findByIdAndRemove(req.params.id, (err, deletedUser ) => {
+    Users.findByIdAndRemove(req.params.id, (err, deletedUser ) => {
       if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
       res.json({ message: `SUCCESS ${deletedUser} has been deleted.`, payload: deletedUser })
     })

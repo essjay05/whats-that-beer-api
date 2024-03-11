@@ -8,7 +8,7 @@ const
   PORT = process.env.PORT || 3030,
   { client, myMongoDb, connectToMongoDb } = require('./db.js'),
   UserModel = require('./models/Users.js'),
-  // usersRoutes = require('./routes/users.js'),
+  usersRoutes = require('./routes/users.js'),
   beersRoutes = require('./routes/beers.js'),
   path = require('path')
 
@@ -35,7 +35,7 @@ app.get('/api', (req, res) => {
 })
 
 // API Routes
-// app.use('/api/users', usersRoutes)
+app.use('/api/users', usersRoutes)
 app.use('/api/beers', beersRoutes)
 
 // Routes
@@ -46,50 +46,9 @@ app.get('/', (req, res) => {
 
 // Signin
 app.post('/signin', async (req, res) => {
-  // // Load hash from your password DB.
-  // bcrypt.compare('apples', '$2a$10$c4iMGUnqh3y0.EIRPWXePOr3SW7i6HXG4OZ6BI5U1fRwjl4/XV8gG', function(err, res) {
-  //   // res == true
-  //   console.log('First guess', res)
-  // });
-  // bcrypt.compare('seeya', '$2a$10$c4iMGUnqh3y0.EIRPWXePOr3SW7i6HXG4OZ6BI5U1fRwjl4/XV8gG', function(err, res) {
-  //   // res = false
-  //   console.log('Second guess', res)
-  // });
-  // if(req.body.email === database.users[0].email &&
-  //   req.body.password === database.users[0].password) {
-  //     res.status(200).json('Successfully signed in')
-  // } else {
-  //   res.status(400).json('error logging in')
-  // }
-})
 
-// Register
-app.post('/signup', async (req, res) => {
-  // const { username, email, password } = req.body
-  const data = {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  }
-
-  const userData = await UserModel.insertMany(data)
-  console.log(`userData:`)
-  console.log(userData)
-  // bcrypt.hash(password, null, null, function(err, hash) {
-  //   // Store hash in your password DB.
-  //   console.log(hash)
-  // });
-  // database.users.push({
-  //   id: '125',
-  //   username: username,
-  //   email: email,
-  //   password: password, 
-  //   entries: 0,
-  //   joined: new Date()
-  // })
-  // database.push
-  // res.json(database.users[database.users.length-1])
 })
+          
 
 // User profile
 app.get('/profile/:id', (req, res) => {

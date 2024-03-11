@@ -11,5 +11,5 @@ const
     }]
   }, { timestamps: true })
 
-const UsersCollection = mongoose.model('Users', userSchema)
-module.exports = UsersCollection
+const UserModel = new mongoose.model('Users', userSchema)
+module.exports = UserModel
