@@ -12,22 +12,7 @@ const
 usersRouter.post('/signup', usersCtrl.create)
 
 // Login user
-usersRouter.post('/login', async (req, res) => {
-  const doc = req.body
-
-  try {
-    // const newUser = new User({ name, email, password })
-    // console.log(`newUser: ${newUser}`)
-    // await newUser.save()
-    const result = await usersColl.insertOne(doc)
-    res.send({
-      message: `Success! New User created.`
-    })
-  } catch (err) {
-    console.error(err)
-    res.status(500).send(err)
-  }
-})
+usersRouter.post('/login', usersCtrl.show)
 
 // usersRouter.get('/', usersCtrl.index)
 // usersRouter.post('/', usersCtrl.create)
