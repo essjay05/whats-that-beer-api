@@ -11,8 +11,8 @@ const
 // Create New User
 usersRouter.post('/signup', usersCtrl.create)
 
-// Login user
-usersRouter.post('/login', usersCtrl.show)
+// Find 1 user
+usersRouter.get('/:id', usersCtrl.show)
 
 // usersRouter.get('/', usersCtrl.index)
 // usersRouter.post('/', usersCtrl.create)
