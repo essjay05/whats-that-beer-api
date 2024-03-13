@@ -25,11 +25,18 @@ module.exports = {
     })
   },
   // Find 1 user
-  show: (req, res) => {
-    Users.findById(req.params.id, (err, user) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      res.json({ message: 'SUCCESS', payload: user })
-    })
+  show: async (req, res) => {
+    const userId = req.params.id
+    const userObjId = new ObjectId(userId)
+    try {
+      const foundUser = await usersCollection.findOne({ _id: userObjId })
+      res.status(200).json({
+        message: `Successfully found user!`
+      })
+    } catch (err) {
+      res.json({ message: `User not found.` })
+      console.error(err)
+    }
   },
   // Create new User
   create: async (req, res) => {
