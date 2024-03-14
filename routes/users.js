@@ -14,6 +14,9 @@ usersRouter.post('/signup', usersCtrl.create)
 // Find 1 user
 usersRouter.get('/:id', usersCtrl.show)
 
+// Update User
+usersRouter.patch('/:id', usersCtrl.update)
+
 // usersRouter.get('/', usersCtrl.index)
 // usersRouter.post('/', usersCtrl.create)
 // // usersRouter.post('/authenticate', usersCtrl.authenticate)
