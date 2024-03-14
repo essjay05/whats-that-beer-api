@@ -41,7 +41,6 @@ module.exports = {
   // Create new User
   create: async (req, res) => {
       const newBeer = req.body
-
       try {
         await createUser(client, newBeer)
       } catch (err) {
@@ -54,15 +53,26 @@ module.exports = {
       }
   },
   // Edit User
-  update: (req, res) => {
-    Users.findById(req.params.id, (err, updatedUser) => {
-      if (!req.body.password) delete req.body.password
-      Object.assign(updatedUser, req.body)
-      updatedUsers.save((err, updatedUser) => {
-        if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-        res.json({ message: `SUCCESS profile is updated`, payload: updatedUser })
+  update: async (req, res) => {
+    const userId = req.params.id
+    const userObjId = new ObjectId(userId)
+    const userUpdate = req.body
+
+    try {
+      const result = await usersCollection.updateOne(
+        { _id: userObjId },
+        { $set: userUpdate }
+      )
+      res.status(200).json({
+        message: `Successfully updated user!`,
+        payload: result
       })
-    })
+    } catch (err) {
+      res.json({
+        message: `No user found.`
+      })
+      console.error(err)
+    }
   },
   // Delete User
   destroy: (req, res) => {
