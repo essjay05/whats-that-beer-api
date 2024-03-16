@@ -18,11 +18,18 @@ const createUser = async (client, newUser) => {
 
 module.exports = {
   // Find all users
-  index: (req, res) => {
-    Users.find({}, (err, users) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      res.json({ message: 'SUCCESS', payload: users })
-    })
+  index: async (req, res) => {
+    try {
+      // Since name value is 1, we're sorting in alpha order by name
+      const cursor = usersCollection.find({}).sort({ name: 1})
+      const allUsers = await cursor.toArray()
+      res.status(200).json({
+        message: `Success! ${allUsers.length} user${allUsers.length > 1 ? 's' : ''} found.`,
+        payload: allUsers
+      })
+    } catch(err) {
+      console.error(err)
+    }
   },
   // Find 1 user
   show: async (req, res) => {
