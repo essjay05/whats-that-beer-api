@@ -17,7 +17,8 @@ usersRouter.get('/:id', usersCtrl.show)
 // Update User
 usersRouter.patch('/:id', usersCtrl.update)
 
-// usersRouter.get('/', usersCtrl.index)
+// See all users
+usersRouter.get('/', usersCtrl.index)
 // usersRouter.post('/', usersCtrl.create)
 // // usersRouter.post('/authenticate', usersCtrl.authenticate)
 
