@@ -82,11 +82,22 @@ module.exports = {
     }
   },
   // Delete User
-  destroy: (req, res) => {
-    Users.findByIdAndRemove(req.params.id, (err, deletedUser ) => {
-      if (err) res.json({ message: 'ERROR', payload: null, code: err.code })
-      res.json({ message: `SUCCESS ${deletedUser} has been deleted.`, payload: deletedUser })
-    })
+  destroy: async (req, res) => {
+    const userId = req.params.id
+    const userObjId = new ObjectId(userId)
+    try {
+      const foundUser = await usersCollection.deleteOne({ _id: userObjId })
+      console.log(foundUser)
+      res.status(200).json({
+        message: `Successfully deleted user!`,
+        payload: foundUser
+      })
+    } catch(err) {
+      res.json({
+        message: `No user found.`
+      })
+      console.error(err)
+    }
   }
   // Authenticate TBD
 }
