@@ -47,15 +47,25 @@ module.exports = {
   },
   // Create new User
   create: async (req, res) => {
-      const newUser = req.body
+      const data = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+      }
       try {
-        await createUser(client, newUser)
+        const existingUser = await usersCollection.findOne({ email: data.email })
+        if (existingUser) {
+          res.status(409).json({
+            message: `User already exists. Please choose a different email.`})
+        } else {
+          await createUser(client, data)
+        }
       } catch (err) {
         console.error(err)
       } finally {
-        res.json({
+        res.status(201).json({
           message: `SUCCESS: New user was registered!`,
-          payload: newUser
+          payload: data
         })
       }
   },
