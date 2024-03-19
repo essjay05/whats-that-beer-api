@@ -47,15 +47,15 @@ module.exports = {
   },
   // Create new User
   create: async (req, res) => {
-      const newBeer = req.body
+      const newUser = req.body
       try {
-        await createUser(client, newBeer)
+        await createUser(client, newUser)
       } catch (err) {
         console.error(err)
       } finally {
         res.json({
           message: `SUCCESS: New user was registered!`,
-          payload: newBeer
+          payload: newUser
         })
       }
   },
