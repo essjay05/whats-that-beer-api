@@ -3,6 +3,7 @@ require('dotenv').config()
 const 
   UserModel = require('../models/Users.js'),
   { MongoClient, ObjectId } = require('mongodb'),
+  bcrypt = require('bcrypt'),
   { mongoDbUri } = require('../db.js'),
   wtbDBName = process.env.DB_NAME,
   usersCollName = process.env.USER_COLLECTION
@@ -14,6 +15,16 @@ const usersCollection = wtbDB.collection(usersCollName)
 const createUser = async (client, newUser) => {
   const result = await usersCollection.insertOne(newUser)
   console.log(`Success! New User was created with the following id: ${result.insertedId}.`)
+}
+
+const hash = async (text, size) => {
+  try {
+    const salt = await bcrypt.genSalt(size)
+    const hash = await bcrypt.hash(text, salt)
+    return hash
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 module.exports = {
@@ -58,6 +69,9 @@ module.exports = {
           res.status(409).json({
             message: `User already exists. Please choose a different email.`})
         } else {
+          const saltRounds = parseInt(process.env.SALT_ROUNDS)
+          const hashedPw = await hash(data.password, saltRounds)
+          data.password = hashedPw
           await createUser(client, data)
         }
       } catch (err) {
