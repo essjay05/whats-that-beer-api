@@ -6,7 +6,8 @@ const
   bcrypt = require('bcrypt'),
   { mongoDbUri } = require('../db.js'),
   wtbDBName = process.env.DB_NAME,
-  usersCollName = process.env.USER_COLLECTION
+  usersCollName = process.env.USER_COLLECTION,
+  saltRounds = parseInt(process.env.SALT_ROUNDS)
 
 const client = new MongoClient(mongoDbUri)
 const wtbDB = client.db(wtbDBName)
@@ -86,7 +87,7 @@ module.exports = {
           res.status(409).json({
             message: `User already exists. Please choose a different email.`})
         } else {
-          const saltRounds = parseInt(process.env.SALT_ROUNDS)
+          
           const hashedPw = await hash(data.password, saltRounds)
           data.password = hashedPw
           await createUser(client, data)
@@ -104,9 +105,18 @@ module.exports = {
   update: async (req, res) => {
     const userId = req.params.id
     const userObjId = new ObjectId(userId)
-    const userUpdate = req.body
+    const userUpdate = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    }
 
     try {
+      if (userUpdate.password) {
+        const hashedPw = await hash(userUpdate.password, saltRounds)
+        userUpdate.password = hashedPw
+      }
+
       const result = await usersCollection.updateOne(
         { _id: userObjId },
         { $set: userUpdate }
