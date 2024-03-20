@@ -1,7 +1,7 @@
 const
   express = require('express'),
   beersRouter = new express.Router(),
-  beersCtrl = require('../controllers/beers.js')
+  beersCtrl = require('../controllers/beerController.js')
   // verifyToken = require('../serverAuth')
 
 // beersRouter.use()

@@ -7,7 +7,7 @@ const
   // bcrypt = require('bcrypt'),
   PORT = process.env.PORT || 3030,
   { client, myMongoDb, connectToMongoDb } = require('./db.js'),
-  UserModel = require('./models/Users.js'),
+  UserModel = require('./models/User.js'),
   usersRoutes = require('./routes/users.js'),
   beersRoutes = require('./routes/beers.js'),
   path = require('path')

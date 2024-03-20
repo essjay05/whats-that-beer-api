@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const 
-  UserModel = require('../models/Users.js'),
+  UserModel = require('../models/User.js'),
   { MongoClient, ObjectId } = require('mongodb'),
   bcrypt = require('bcrypt'),
   { mongoDbUri } = require('../db.js'),
