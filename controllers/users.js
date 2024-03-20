@@ -51,8 +51,25 @@ module.exports = {
       res.status(200).json({
         message: `Successfully found user!`
       })
-    } catch (err) {
+    } catch(err) {
       res.json({ message: `User not found.` })
+      console.error(err)
+    }
+  },
+  // Login user
+  login: async (req, res) => {
+    try {
+      const existingUser = await usersCollection.findOne({ email: req.body.email })
+      if (!existingUser) {
+        res.status(409).json({ message: `User email not found.`})
+      }
+      const isPwMatch = await bcrypt.compare(req.body.password, existingUser.password)
+      if (isPwMatch) {
+        res.status(200).json({ message: `User is logged in!`})
+      } else {
+        res.json({ message: `Wrong password.`})
+      }
+    } catch(err) {
       console.error(err)
     }
   },
