@@ -132,28 +132,22 @@ module.exports = {
       const existingUser = await usersCollection.findOne({ _id: userObjId })
       const prevName = existingUser.name
       const prevEmail = existingUser.email
-      const prevUserPw = existingUser.password
+      const prevPw = existingUser.password
 
       /** 
        * Todo: look up user data based on id and compare userUpdate values with existing user
        * values and if userUpdate has null values, use the existing user values so it doesn't
        * get nulled on save if nothing is entered in the update req.
       */ 
-      const newHashedPw = await hash(userUpdate.password, saltRounds)
-      if (userUpdate.password && (newHashedPw !== prevUserPw)) {
-        userUpdate.password = newHashedPw
-      } else {
-        userUpdate.password = prevUserPw
-      }
 
       const newName = userUpdate.name
       const newEmail = userUpdate.email
+      const newHashedPw = await hash(userUpdate.password, saltRounds)
 
-      // Compare name data
+      // Compare new vs old data
       userUpdate.name = comparePrevUserData(prevName, newName)
       userUpdate.email = comparePrevUserData(prevEmail, newEmail)
-      // 65fa632c25e44dea2d048036
-      // $2b$12$J.FRSOasOlosJu5AJ4BAzudExm.IB62xXT6cIVNUwm/VlSOUxXKAS
+      userUpdate.password = comparePrevUserData(prevPw, newHashedPw)
 
       const result = await usersCollection.updateOne(
         { _id: userObjId },
