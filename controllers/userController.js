@@ -17,6 +17,22 @@ const createUser = async (client, newUser) => {
   const result = await usersCollection.insertOne(newUser)
   console.log(`Success! New User was created with the following id: ${result.insertedId}.`)
 }
+const comparePrevUserData = (prevInfo, newInfo) => {
+  let infoToSave;
+  /**
+   * If newInfo not null & (newInfo !== prevInfo) save new
+   * info value.
+   * Else if newInfo is null or newInfo === prevInfo save
+   * prev info value.
+   */
+  console.log(`prevInfo: ${prevInfo} | newInfo: ${newInfo}`)
+  if (!!newInfo && (newInfo !== prevInfo)) {
+    infoToSave = newInfo;
+  } else {
+    infoToSave = prevInfo;
+  }
+  return infoToSave;
+}
 
 const hash = async (text, size) => {
   try {
@@ -112,10 +128,32 @@ module.exports = {
     }
 
     try {
-      if (userUpdate.password) {
-        const hashedPw = await hash(userUpdate.password, saltRounds)
-        userUpdate.password = hashedPw
+      // Check for existing user and grab previously hashed PW:
+      const existingUser = await usersCollection.findOne({ _id: userObjId })
+      const prevName = existingUser.name
+      const prevEmail = existingUser.email
+      const prevUserPw = existingUser.password
+
+      /** 
+       * Todo: look up user data based on id and compare userUpdate values with existing user
+       * values and if userUpdate has null values, use the existing user values so it doesn't
+       * get nulled on save if nothing is entered in the update req.
+      */ 
+      const newHashedPw = await hash(userUpdate.password, saltRounds)
+      if (userUpdate.password && (newHashedPw !== prevUserPw)) {
+        userUpdate.password = newHashedPw
+      } else {
+        userUpdate.password = prevUserPw
       }
+
+      const newName = userUpdate.name
+      const newEmail = userUpdate.email
+
+      // Compare name data
+      userUpdate.name = comparePrevUserData(prevName, newName)
+      userUpdate.email = comparePrevUserData(prevEmail, newEmail)
+      // 65fa632c25e44dea2d048036
+      // $2b$12$J.FRSOasOlosJu5AJ4BAzudExm.IB62xXT6cIVNUwm/VlSOUxXKAS
 
       const result = await usersCollection.updateOne(
         { _id: userObjId },
