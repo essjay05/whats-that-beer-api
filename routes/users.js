@@ -1,24 +1,19 @@
-const
-  express = require('express'),
-  UserModel = require ('../models/User.js'),
-  usersRouter = new express.Router(),
-  { client } = require('../db.js'),
-  myDb = client.db('whats-that-beer-db'),
-  usersColl = myDb.collection('users'),
-  usersCtrl = require('../controllers/userController.js')
-  // Token for authentication
+const express = require('express')
+const usersRouter = new express.Router()
+const usersCtrl = require('../controllers/userController.js')
+const authCtrl = require('../controllers/authController.js')
 
 // Create New User
-usersRouter.post('/signup', usersCtrl.create)
+usersRouter.post('/signup', authCtrl.create)
 
 // Login User
-usersRouter.post('/signin', usersCtrl.login)
+usersRouter.post('/signin', authCtrl.login)
 
 // Find 1 user
 usersRouter.get('/:id', usersCtrl.show)
 
 // Update User
-usersRouter.patch('/:id', usersCtrl.update)
+usersRouter.patch('/:id', authCtrl.update)
 
 // See all users
 usersRouter.get('/', usersCtrl.index)
