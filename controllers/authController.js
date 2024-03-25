@@ -1,14 +1,18 @@
 require('dotenv').config()
 
-const UserModel = require('../models/User')
 const { MongoClient, ObjectId } = require('mongodb')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+const UserModel = require('../models/User')
 const { mongoDbUri } = require('../db.js')
 const { hash } = require('../utils/AuthUtils.js')
+const createError = require('../utils/appError')
 
 const wtbDBName = process.env.DB_NAME
 const usersCollName = process.env.USER_COLLECTION
 const saltRounds = parseInt(process.env.SALT_ROUNDS)
+const jwtKey = process.env.JWT_KEY
 
 const client = new MongoClient(mongoDbUri)
 const wtbDB = client.db(wtbDBName)
@@ -17,6 +21,7 @@ const usersCollection = wtbDB.collection(usersCollName)
 const createUser = async (client, newUser) => {
   const result = await usersCollection.insertOne(newUser)
   console.log(`Success! New User was created with the following id: ${result.insertedId}.`)
+  return result
 }
 
 const comparePrevUserData = (prevInfo, newInfo) => {
@@ -36,7 +41,7 @@ const comparePrevUserData = (prevInfo, newInfo) => {
 
 module.exports = {
   // Create new User
-  create: async (req, res) => {
+  create: async (req, res, next) => {
     const data = {
       name: req.body.name,
       email: req.body.email,
@@ -47,19 +52,26 @@ module.exports = {
       if (existingUser) {
         res.status(409).json({
           message: `User already exists. Please choose a different email.`})
-      } else {
+        return next(new createError(`User already exists!`, 409))
+      } 
         
-        const hashedPw = await hash(data.password, saltRounds)
-        data.password = hashedPw
-        await createUser(client, data)
-      }
-    } catch (err) {
-      console.error(err)
-    } finally {
-      res.status(201).json({
-        message: `SUCCESS: New user was registered!`,
-        payload: data
+      const hashedPw = await hash(data.password, saltRounds)
+      data.password = hashedPw
+      const newUser = await createUser(client, data)
+      console.log('NewUser:')
+      console.log(newUser)
+
+      // Assign JWT to user
+      const token = jwt.sign({ _id: newUser.insertedId}, jwtKey, {
+        expiresIn: '900',
       })
+      res.status(201).json({
+        status: 'Success',
+        message: 'User registered successfully!',
+        token,
+      })
+    } catch (err) {
+      next(console.error(err))
     }
   },
   // Login user
