@@ -19,7 +19,8 @@ const wtbDB = client.db(wtbDBName)
 const usersCollection = wtbDB.collection(usersCollName)
 
 const createUser = async (client, newUser) => {
-  const result = await usersCollection.insertOne(newUser)
+  const modelNewUser = await UserModel.create(newUser)
+  const result = await usersCollection.insertOne(modelNewUser)
   console.log(`Success! New User was created with the following id: ${result.insertedId}.`)
   return result
 }
@@ -51,6 +52,7 @@ module.exports = {
       const existingUser = await usersCollection.findOne({ email: data.email })
       if (existingUser) {
         res.status(409).json({
+          status: "Fail",
           message: `User already exists. Please choose a different email.`})
         return next(new createError(`User already exists!`, 409))
       } 
@@ -63,7 +65,7 @@ module.exports = {
 
       // Assign JWT to user
       const token = jwt.sign({ _id: newUser.insertedId}, jwtKey, {
-        expiresIn: '900',
+        expiresIn: '1d',
       })
       res.status(201).json({
         status: 'Success',
@@ -77,18 +79,32 @@ module.exports = {
   // Login user
   login: async (req, res) => {
     try {
-      const existingUser = await usersCollection.findOne({ email: req.body.email })
-      if (!existingUser) {
-        res.status(409).json({ message: `User email not found.`})
+      const { email, password } = req.body
+
+      const existingUser = await usersCollection.findOne({ email })
+      if (!existingUser) return next(new createError(`User not found!`, 404))
+
+      const isPwMatch = await bcrypt.compare(password, existingUser.password)
+      if (!isPwMatch) {
+        return next(new createError(`Invalid email or password.`, 401))
+
       }
-      const isPwMatch = await bcrypt.compare(req.body.password, existingUser.password)
-      if (isPwMatch) {
-        res.status(200).json({ message: `User is logged in!`})
-      } else {
-        res.json({ message: `Wrong password.`})
-      }
+      
+      const token = jwt.sign({ id: existingUser._id}, jwtKey, {
+        expiresIn: '1d',
+      })
+      res.status(200).json({
+        status: 'Success',
+        message: 'User logged in successfully!',
+        user: {
+          _id: existingUser._id,
+          email: existingUser.email,
+          role: existingUser.role
+        },
+        token,
+      })
     } catch(err) {
-      console.error(err)
+      next(console.error(err))
     }
   },
   // Edit User
