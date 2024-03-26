@@ -6,13 +6,13 @@ const jwt = require('jsonwebtoken')
 
 const UserModel = require('../models/User')
 const { mongoDbUri } = require('../db.js')
-const { hash } = require('../utils/AuthUtils.js')
+const { hash, tokenizeUser } = require('../utils/AuthUtils.js')
 const createError = require('../utils/appError')
 
 const wtbDBName = process.env.DB_NAME
 const usersCollName = process.env.USER_COLLECTION
 const saltRounds = parseInt(process.env.SALT_ROUNDS)
-const jwtKey = process.env.JWT_KEY
+// const jwtKey = process.env.JWT_KEY
 
 const client = new MongoClient(mongoDbUri)
 const wtbDB = client.db(wtbDBName)
@@ -64,9 +64,8 @@ module.exports = {
       console.log(newUser)
 
       // Assign JWT to user
-      const token = jwt.sign({ _id: newUser.insertedId}, jwtKey, {
-        expiresIn: '1d',
-      })
+      const token = await tokenizeUser(newUser.insertedId)
+
       res.status(201).json({
         status: 'Success',
         message: 'User registered successfully!',
@@ -77,7 +76,7 @@ module.exports = {
     }
   },
   // Login user
-  login: async (req, res) => {
+  login: async (req, res, next) => {
     try {
       const { email, password } = req.body
 
@@ -90,9 +89,8 @@ module.exports = {
 
       }
       
-      const token = jwt.sign({ id: existingUser._id}, jwtKey, {
-        expiresIn: '1d',
-      })
+      const token = await tokenizeUser(existingUser._id)
+      
       res.status(200).json({
         status: 'Success',
         message: 'User logged in successfully!',
