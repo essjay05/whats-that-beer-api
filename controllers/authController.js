@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const { MongoClient, ObjectId } = require('mongodb')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 
 const UserModel = require('../models/User')
 const { mongoDbUri } = require('../db.js')
@@ -12,7 +11,6 @@ const createError = require('../utils/appError')
 const wtbDBName = process.env.DB_NAME
 const usersCollName = process.env.USER_COLLECTION
 const saltRounds = parseInt(process.env.SALT_ROUNDS)
-// const jwtKey = process.env.JWT_KEY
 
 const client = new MongoClient(mongoDbUri)
 const wtbDB = client.db(wtbDBName)
@@ -90,7 +88,7 @@ module.exports = {
       }
       
       const token = await tokenizeUser(existingUser._id)
-      
+
       res.status(200).json({
         status: 'Success',
         message: 'User logged in successfully!',
