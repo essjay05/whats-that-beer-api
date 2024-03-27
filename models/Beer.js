@@ -1,12 +1,13 @@
-const
-  mongoose = require('mongoose'),
-  beerSchema = new mongoose.Schema({
+const mongoose = require('mongoose')
+const beerSchema = new mongoose.Schema({
     beerId: { type: String, required: true },
-    name: { type: String },
+    name: { type: String, required: true },
     abv: { type: String },
     type: { type: String},
-    brewery: { type: String},
     description: { type: String},
+    brewery: { 
+      type: String,
+      ref: 'Brewery' /* Brewery Schema *Bonus* */ },
     photos: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Photo' /* Photo Schema *Bonus* */}],
@@ -15,5 +16,6 @@ const
       ref: 'User' }]
   }, { timestamps: true })
 
-  const Beer = new mongoose.model('Beer', beerSchema)
-  module.exports = Beer
+const Beer = mongoose.model('Beer', beerSchema)
+
+module.exports = Beer
