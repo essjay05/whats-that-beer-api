@@ -57,8 +57,6 @@ module.exports = {
       const hashedPw = await hash(data.password, saltRounds)
       data.password = hashedPw
       const newUser = await createUser(client, data)
-      console.log('NewUser:')
-      console.log(newUser)
 
       // Assign JWT to user
       const token = await tokenizeUser(newUser.insertedId)
@@ -83,7 +81,6 @@ module.exports = {
       const isPwMatch = await bcrypt.compare(password, existingUser.password)
       if (!isPwMatch) {
         return next(new createError(`Invalid email or password.`, 401))
-
       }
       
       const token = await tokenizeUser(existingUser._id)
