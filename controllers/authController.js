@@ -3,7 +3,7 @@ require('dotenv').config()
 const { MongoClient, ObjectId } = require('mongodb')
 const bcrypt = require('bcrypt')
 
-const UserModel = require('../models/User')
+const User = require('../models/User')
 const { mongoDbUri } = require('../db.js')
 const { hash, tokenizeUser } = require('../utils/AuthUtils.js')
 const createError = require('../utils/appError')
@@ -17,8 +17,7 @@ const wtbDB = client.db(wtbDBName)
 const usersCollection = wtbDB.collection(usersCollName)
 
 const createUser = async (client, newUser) => {
-  const modelNewUser = await UserModel.create(newUser)
-  const result = await usersCollection.insertOne(modelNewUser)
+  const result = await usersCollection.insertOne(newUser)
   console.log(`Success! New User was created with the following id: ${result.insertedId}.`)
   return result
 }
