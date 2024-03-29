@@ -19,7 +19,7 @@ breweriesRouter.post('/', breweriesCtrl.create)
 breweriesRouter.get('/:id', breweriesCtrl.show)
 
 // UPDATE / Like
-// breweriesRouter.patch('/:id', breweriesCtrl.updateOne)
+breweriesRouter.patch('/:id', breweriesCtrl.updateOne)
 
 // UPSERT / Update if exists otherwise insert new
 // breweriesRouter.put('/:name', breweriesCtrl.upsert)
