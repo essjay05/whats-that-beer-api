@@ -17,7 +17,7 @@ const createBrewery = async (client, newBrewery) => {
 }
 
 module.exports = {
-  // Get all Beers
+  // Get all Breweries
   index: async (req, res) => {
     // findAllBreweries()
     try {
@@ -33,7 +33,7 @@ module.exports = {
       console.error(err)
     }
   },
-  // Find 1 beer
+  // Find 1 Brewery
   show: async (req, res) => {
     const breweryId = req.params.id
     const breweryObjId = new ObjectId(breweryId)
@@ -51,7 +51,7 @@ module.exports = {
       console.error(err)
     }
   },
-  // Create new Beer
+  // Create new Brewery
   create: async (req, res) => {
     const newBrewery = req.body
     try {
@@ -61,5 +61,31 @@ module.exports = {
     } finally {
       res.json({ message: `SUCCESS: New brewery was created!`, payload: newBrewery })
     }
+  },
+  // Update Brewery
+  // Update 1 Beer by ID
+  updateOne: async (req, res) => {
+    const breweryId = req.params.id
+    const breweryObjId = new ObjectId(breweryId)
+    const breweryUpdate = req.body
+
+    try {
+      const result = await breweryCollection.updateOne(
+        { _id: breweryObjId },
+        { $set: breweryUpdate }
+      )
+
+      res.status(200).json({
+        message: `Successfully updated brewery!`,
+        payload: result
+      })
+      
+    } catch (err) {
+      res.json({
+        message: `No brewery found.`
+      })
+      console.error(err)
+    }
+
   }
 }
