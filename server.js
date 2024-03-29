@@ -9,6 +9,7 @@ const
   { client, myMongoDb, connectToMongoDb } = require('./db.js'),
   UserModel = require('./models/User.js'),
   usersRoutes = require('./routes/users.js'),
+  breweriesRoutes = require('./routes/breweries.js'),
   beersRoutes = require('./routes/beers.js'),
   path = require('path')
 
@@ -47,6 +48,7 @@ app.get('/api', (req, res) => {
 
 // API Routes
 app.use('/api/users', usersRoutes)
+app.use('/api/breweries', breweriesRoutes)
 app.use('/api/beers', beersRoutes)
 
 // Routes
