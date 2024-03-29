@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const brewerySchema = new mongoose.Schema({
-    breweryId: { type: String, required: true },
+    // breweryId: { type: String, required: true },
     name: { type: String, required: true },
     city: { type: String },
     country: {type: String },
