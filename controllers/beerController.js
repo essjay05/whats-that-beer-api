@@ -1,11 +1,10 @@
 require('dotenv').config()
 
-const 
-  BeerModel = require('../models/Beer.js'),
-  { MongoClient, ObjectId } = require('mongodb'),
-  { mongoDbUri } = require('../db.js'),
-  wtbDBName = process.env.DB_NAME,
-  beerCollName = process.env.BEER_COLLECTION
+const Beer = require('../models/Beer.js')
+const { MongoClient, ObjectId } = require('mongodb')
+const { mongoDbUri } = require('../db.js')
+const wtbDBName = process.env.DB_NAME
+const beerCollName = process.env.BEER_COLLECTION
 
 const client = new MongoClient(mongoDbUri)
 const wtbDB = client.db(wtbDBName)
