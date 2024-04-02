@@ -1,11 +1,10 @@
 require('dotenv').config()
 
-const 
-  Brewery = require('../models/Brewery.js'),
-  { MongoClient, ObjectId } = require('mongodb'),
-  { mongoDbUri } = require('../db.js'),
-  wtbDBName = process.env.DB_NAME,
-  breweryCollName = process.env.BREWERY_COLLECTION
+const Brewery = require('../models/Brewery.js')
+const { MongoClient, ObjectId } = require('mongodb')
+const { mongoDbUri } = require('../db.js')
+const wtbDBName = process.env.DB_NAME
+const breweryCollName = process.env.BREWERY_COLLECTION
 
 const client = new MongoClient(mongoDbUri)
 const wtbDB = client.db(wtbDBName)
@@ -62,8 +61,7 @@ module.exports = {
       res.json({ message: `SUCCESS: New brewery was created!`, payload: newBrewery })
     }
   },
-  // Update Brewery
-  // Update 1 Beer by ID
+  // Update 1 Brewery by ID
   updateOne: async (req, res) => {
     const breweryId = req.params.id
     const breweryObjId = new ObjectId(breweryId)
