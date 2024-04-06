@@ -25,6 +25,6 @@ breweriesRouter.patch('/:id', breweriesCtrl.updateOne)
 // breweriesRouter.put('/:name', breweriesCtrl.upsert)
 
 // DELETE
-// breweriesRouter.delete('/:id', breweriesCtrl.destroy)
+breweriesRouter.delete('/:id', breweriesCtrl.destroy)
 
 module.exports = breweriesRouter
