@@ -22,7 +22,7 @@ breweriesRouter.get('/:id', breweriesCtrl.show)
 breweriesRouter.patch('/:id', breweriesCtrl.updateOne)
 
 // UPSERT / Update if exists otherwise insert new
-// breweriesRouter.put('/:name', breweriesCtrl.upsert)
+breweriesRouter.put('/:name', breweriesCtrl.upsert)
 
 // DELETE
 breweriesRouter.delete('/:id', breweriesCtrl.destroy)
