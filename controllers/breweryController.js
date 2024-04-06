@@ -106,6 +106,9 @@ module.exports = {
     console.log('breweryUpdate is:')
     console.log(breweryUpdate)
 
+    // ToDo: create logic if exact name already exists, update don't create new
+    // ToDo: make sure req.params.name gets used as req.body.name
+
     try {
       const result = await upsertBreweryByName(client, breweryName, breweryUpdate)
       res.status(200).json({
