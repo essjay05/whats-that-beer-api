@@ -85,5 +85,24 @@ module.exports = {
       console.error(err)
     }
 
+  },
+  // Delete Brewery
+  destroy: async (req, res) => {
+    const breweryId = req.params.id
+    const breweryObjId = new ObjectId(breweryId)
+    try {
+      const foundBrewery = await breweryCollection.deleteOne({ _id: breweryObjId })
+      console.log(foundBrewery)
+      res.status(200).json({
+        message: `Successfully deleted brewery!`,
+        payload: foundBrewery
+      })
+      
+    } catch (err) {
+      res.json({
+        message: `No brewery found.`
+      })
+      console.error(err)
+    }
   }
 }
