@@ -15,6 +15,18 @@ const createBrewery = async (client, newBrewery) => {
   console.log(`New Brewery was created with the following id: ${result.insertedId}`)
 }
 
+const upsertBreweryByName = async (client, nameOfBrewery, updatedBrewery) => {
+  const result = await breweryCollection.updateOne({ name: nameOfBrewery }, { $set: updatedBrewery}, { upsert: true })
+  
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`)
+  
+  if (result.upsertedCount > 0) {
+    console.log(`One document was inserted with the id ${result.upsertedId}.`)
+  } else {
+    console.log(`${result.modifiedCount} document(s) were updated.`)
+  }
+}
+
 module.exports = {
   // Get all Breweries
   index: async (req, res) => {
@@ -82,6 +94,25 @@ module.exports = {
       res.json({
         message: `No brewery found.`
       })
+      console.error(err)
+    }
+
+  },
+  // Upsert (update 1 brewery and/or insert)
+  upsert: async (req, res) => {
+    const breweryName = req.params.name
+    const breweryUpdate = req.body
+    console.log(`breweryName: ${breweryName}`)
+    console.log('breweryUpdate is:')
+    console.log(breweryUpdate)
+
+    try {
+      const result = await upsertBreweryByName(client, breweryName, breweryUpdate)
+      res.status(200).json({
+        message: `Successfully updated brewery!`,
+        payload: result
+      })
+    } catch (err) {
       console.error(err)
     }
 
