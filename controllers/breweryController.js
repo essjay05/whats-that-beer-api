@@ -110,11 +110,20 @@ module.exports = {
     // ToDo: make sure req.params.name gets used as req.body.name
 
     try {
+      // Check if req.name exists in database
+      const foundBrewery = await breweryCollection.findOne({ name: breweryName })
       const result = await upsertBreweryByName(client, breweryName, breweryUpdate)
-      res.status(200).json({
-        message: `Successfully updated brewery!`,
-        payload: result
-      })
+      if (foundBrewery) {
+        res.status(200).json({
+          message: `Successfully updated brewery!`,
+          payload: result
+        })
+      } else {
+        res.status(200).json({
+          message: `${breweryName} not found. Successfully created brewery!`,
+          payload: result
+        })
+      }
     } catch (err) {
       console.error(err)
     }
