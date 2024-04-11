@@ -102,9 +102,6 @@ module.exports = {
   upsert: async (req, res) => {
     const breweryName = req.params.name
     const breweryUpdate = req.body
-    console.log(`breweryName: ${breweryName}`)
-    console.log('breweryUpdate is:')
-    console.log(breweryUpdate)
 
     // ToDo: create logic if exact name already exists, update don't create new
     // ToDo: make sure req.params.name gets used as req.body.name
@@ -112,13 +109,18 @@ module.exports = {
     try {
       // Check if req.name exists in database
       const foundBrewery = await breweryCollection.findOne({ name: breweryName })
-      const result = await upsertBreweryByName(client, breweryName, breweryUpdate)
       if (foundBrewery) {
+        const result = await breweryCollection.updateOne(
+          { name: breweryName },
+          { $set: breweryUpdate }
+        )
         res.status(200).json({
           message: `Successfully updated brewery!`,
           payload: result
         })
       } else {
+        breweryUpdate.name = req.params.name
+        const result = await createBrewery(client, breweryUpdate)
         res.status(200).json({
           message: `${breweryName} not found. Successfully created brewery!`,
           payload: result
