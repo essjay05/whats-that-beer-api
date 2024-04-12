@@ -5,7 +5,7 @@ import Register from './Auth/Register'
 import Login from './Auth/Login'
 import Dashboard from './pages/Dashboard'
 
-const App = () => {
+const App = () => { 
   return <Router>
     <Routes>
       <Route path='/' element={<Register/>}></Route>
