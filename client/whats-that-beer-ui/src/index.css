@@ -15,7 +15,7 @@
   -webkit-text-size-adjust: 100%;
 
   /* Grayscale Colors */
-  --black-color: #1d1e22;
+  --black-color: #202B32;
   --dark-teal: #344e5c;
   --dark-grey-color: #636e72;
   --light-grey-color: #dfe6e9;
@@ -61,6 +61,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* background: var(--off-white-color);
+  color: var(--black-color); */
   min-height: 100vh;
   min-width: 320px;
 }
@@ -86,12 +88,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--dark-teal-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--teal-color);
 }
 button:focus,
 button:focus-visible {
@@ -100,13 +102,13 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--black-color);
+    background-color: var(--off-white-color);
   }
   a:hover {
-    color: #747bff;
+    color: var(--purple-color);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--light-grey-color);
   }
 }
