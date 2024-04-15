@@ -1,4 +1,5 @@
-.register-img {
+.register-img,
+.login-img {
   width: 100%;
   border-radius: var(--basic-radius);
 }
