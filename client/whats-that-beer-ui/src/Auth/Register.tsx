@@ -11,11 +11,11 @@ type FieldType = {
   remember?: string;
 };
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+const handleRegister: FormProps<FieldType>["onFinish"] = (values) => {
   console.log('Success:', values);
 };
 
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+const onRegisterFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
@@ -39,8 +39,8 @@ const Register = () => {
           <Form
             layout="vertical"
             initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={handleRegister}
+            onFinishFailed={onRegisterFailed}
             autoComplete="off">
             <Form.Item<FieldType>
               label="Full Name"
