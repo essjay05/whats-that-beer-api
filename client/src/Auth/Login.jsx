@@ -1,19 +1,13 @@
-import { Alert, Button, Card, Flex, Form, Input, Spin, Typography, type FormProps } from "antd";
+import { Alert, Button, Card, Flex, Form, Input, Spin, Typography } from "antd";
 import { Link } from "react-router-dom"
 import loginImage from '../../public/undraw_authentication_re_svpt.svg'
 import './Auth.css'
 
-type FieldType = {
-  email?: string;
-  password?: string;
-  remember?: string;
-};
-
-const handleLogin: FormProps<FieldType>["onFinish"] = async(values) => {
+const handleLogin = async(values) => {
   console.log('Success:', values);
 };
 
-const onLoginFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+const onLoginFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
@@ -46,7 +40,7 @@ const Login = () => {
             onFinish={handleLogin}
             onFinishFailed={onLoginFailed}
             autoComplete="off">
-            <Form.Item<FieldType>
+            <Form.Item
               label="Email"
               name="email"
               rules={[
@@ -55,7 +49,7 @@ const Login = () => {
               ]}>
               <Input placeholder="Enter your email"/>
             </Form.Item>
-            <Form.Item<FieldType>
+            <Form.Item
               label="Password"
               name="password"
               rules={[{ required: true, message: 'Please input your password.' }]}>

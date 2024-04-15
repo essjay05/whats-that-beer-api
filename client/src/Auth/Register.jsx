@@ -1,21 +1,13 @@
-import { Alert, Button, Card, Flex, Form, Input, Spin, Typography, type FormProps } from "antd";
+import { Alert, Button, Card, Flex, Form, Input, Spin, Typography } from "antd";
 import { Link } from "react-router-dom"
 import signupImage from '../../public/undraw_sign_up_n6im(1).svg'
 import './Auth.css'
 
-type FieldType = {
-  name?: string;
-  email?: string;
-  password?: string;
-  passwordConfirm?: string;
-  remember?: string;
-};
-
-const handleRegister: FormProps<FieldType>["onFinish"] = (values) => {
+const handleRegister = (values) => {
   console.log('Success:', values);
 };
 
-const onRegisterFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+const onRegisterFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
@@ -42,13 +34,13 @@ const Register = () => {
             onFinish={handleRegister}
             onFinishFailed={onRegisterFailed}
             autoComplete="off">
-            <Form.Item<FieldType>
+            <Form.Item
               label="Full Name"
               name="name"
               rules={[{ required: true, message: "Please input your full name."}]}>
               <Input placeholder="Enter your full name"/>
             </Form.Item>
-            <Form.Item<FieldType>
+            <Form.Item
               label="Email"
               name="email"
               rules={[
@@ -57,13 +49,13 @@ const Register = () => {
               ]}>
               <Input placeholder="Enter your email"/>
             </Form.Item>
-            <Form.Item<FieldType>
+            <Form.Item
               label="Password"
               name="password"
               rules={[{ required: true, message: 'Please input your password.' }]}>
               <Input.Password placeholder="Enter your password" />
             </Form.Item>
-            <Form.Item<FieldType>
+            <Form.Item
               label="Confirm Password"
               name="passwordConfirm"
               rules={[{ required: true, message: 'Please confirm your password.' }]}>
