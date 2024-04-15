@@ -1,7 +1,7 @@
-import { Button, Card, Flex, Form, Input, Typography, type FormProps } from "antd";
+import { Alert, Button, Card, Flex, Form, Input, Spin, Typography, type FormProps } from "antd";
 import { Link } from "react-router-dom"
 import signupImage from '../../public/undraw_sign_up_n6im(1).svg'
-import './Register.css'
+import './Auth.css'
 
 type FieldType = {
   name?: string;
@@ -69,11 +69,13 @@ const Register = () => {
               rules={[{ required: true, message: 'Please confirm your password.' }]}>
               <Input.Password placeholder="Re-enter your password" />
             </Form.Item>
+            {/* { error && (<Alert description={error} type='error' showIcon closable className='alert' />)} */}
             <Form.Item>
               <Button
-                type="primary"
+                // type={`${loading ? '' : 'primary'}`}
                 htmlType="submit"
                 className="btn">
+                {/* { loading ? <Spin /> : 'Create Account' } */}
                 Create Account
               </Button>
             </Form.Item>
