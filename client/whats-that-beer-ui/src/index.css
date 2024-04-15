@@ -48,6 +48,10 @@
   --dark-teal-color: #003033;
   --dark-blue-color: #142143;
   --dark-purple-color: #060846;
+
+  /* Padding and border settings */
+  --basic-radius: 8px;
+  --basic-padding: .5rem;
   
 }
 

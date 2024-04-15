@@ -6,3 +6,11 @@
 .subtitle {
   text-align: center;
 }
+
+.btn {
+  width: 100%;
+}
+
+.alert {
+  margin-bottom: 3*var(--basic-padding);
+}
