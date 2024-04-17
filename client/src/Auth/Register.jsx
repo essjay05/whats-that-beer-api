@@ -1,17 +1,20 @@
 import { Alert, Button, Card, Flex, Form, Input, Spin, Typography } from "antd";
 import { Link } from "react-router-dom"
-import signupImage from '../../public/undraw_sign_up_n6im(1).svg'
+import signupImage from '/undraw_sign_up_n6im(1).svg'
 import './Auth.css'
-
-const handleRegister = (values) => {
-  console.log('Success:', values);
-};
-
-const onRegisterFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+import useSignUp from "../hooks/useSignUp";
 
 const Register = () => {
+
+  const { loading, error, registerUser } = useSignUp()
+
+  const handleRegister = (values) => {
+    registerUser(values);
+  };
+
+  const onRegisterFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
   return (
     <Card className="form-container">
@@ -61,14 +64,20 @@ const Register = () => {
               rules={[{ required: true, message: 'Please confirm your password.' }]}>
               <Input.Password placeholder="Re-enter your password" />
             </Form.Item>
-            {/* { error && (<Alert description={error} type='error' showIcon closable className='alert' />)} */}
+            { error && (
+              <Alert
+                description={error}
+                type='error'
+                showIcon
+                closable
+                className='alert' />
+            )}
             <Form.Item>
               <Button
-                // type={`${loading ? '' : 'primary'}`}
+                type={`${loading ? '' : 'primary'}`}
                 htmlType="submit"
                 className="btn">
-                {/* { loading ? <Spin /> : 'Create Account' } */}
-                Create Account
+                { loading ? <Spin /> : 'Create Account' }
               </Button>
             </Form.Item>
             <Form.Item>
