@@ -1,6 +1,6 @@
 import { Alert, Button, Card, Flex, Form, Input, Spin, Typography } from "antd";
 import { Link } from "react-router-dom"
-import loginImage from '../../public/undraw_authentication_re_svpt.svg'
+import loginImage from '/undraw_authentication_re_svpt.svg'
 import './Auth.css'
 
 const handleLogin = async(values) => {
