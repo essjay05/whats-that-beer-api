@@ -45,6 +45,8 @@ module.exports = {
       email: req.body.email,
       password: req.body.password
     }
+    console.log(`authController data`)
+    console.log(data)
     try {
       const existingUser = await usersCollection.findOne({ email: data.email })
       if (existingUser) {
