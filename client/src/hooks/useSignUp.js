@@ -29,7 +29,7 @@ const useSignUp = () => {
     axios.defaults.headers.post['Content-Type'] ='application/json; charset=utf-8';
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-    try {
+    // try {
       setError(null)
       setLoading(false)
       // const res = await fetch(mongoDbRegisterEndpoint, {
@@ -43,30 +43,37 @@ const useSignUp = () => {
 
       const res = await axios.post(
         mongoDbRegisterEndpoint,
-        {
-          name: name,
-          email: email,
-          password: password
-        },
-        {headers})
+        signupBody,
+        { 
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            message.success('User successfully registered!')
+          } else if (res.status === 400) {
+            setError(data.message)
+            login(data.token, data.user)
+            console.log('Res.status === 400')
+          } else {
+            console.log('Other error')
+            message.error('Registration failed.')
+          }
+        }).catch((err) => {
+          console.log(err)
+          message.error('Registration failed.')
+        })
 
-      const data = await res.json()
-      console.log(`data`)
-      console.log(data)
+      
+      console.log(`res`)
+      console.log(res)
 
-      if (res.status === 201) {
-        message.success('User successfully registered!')
-      } else if (res.status === 400) {
-        setError(data.message)
-        login(data.token, data.user)
-      } else {
-        message.error('Registration failed.')
-      }
-    } catch(err) {
-      message.error('Registration failed.')
-    } finally {
-      setLoading(false)
-    }
+      
+    // } catch(err) {
+      
+    // } finally {
+    //   setLoading(false)
+    // }
   }
 
   return { loading, error, registerUser }
