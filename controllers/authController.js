@@ -69,6 +69,9 @@ module.exports = {
         token,
       })
     } catch (err) {
+      res.status(500).json({
+        error: 'Error inserting data into MongoDB.'
+      })
       next(console.error(err))
     }
   },
