@@ -45,13 +45,15 @@ module.exports = {
       email: req.body.email,
       password: req.body.password
     }
-    console.log(`authController data`)
+    res.set('Access-Control-Allow-Origin', '*');
+    console.log('set cors in create user')
+    console.log(`authController data received from form:`)
     console.log(data)
     try {
+      
       const existingUser = await usersCollection.findOne({ email: data.email })
       if (existingUser) {
         res.status(409).json({
-          status: "Fail",
           message: `User already exists. Please choose a different email.`})
         return next(new createError(`User already exists!`, 409))
       } 

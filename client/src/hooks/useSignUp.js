@@ -38,14 +38,18 @@ const useSignUp = () => {
       setError(null)
       setLoading(false)
       const res = await fetch(mongoDbRegisterEndpoint, {
-        // mode: 'no-cors',
+        mode: 'cors',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
         },
         body: jsonVals
       })
+
+      const data = await res.json()
+
+      console.log(`data aka res.json()`)
+      console.log(data)
 
       if (res.status === 201) {
         message.success('User successfully registered!')
