@@ -29,7 +29,7 @@ const useSignUp = () => {
     console.log(`jsonVals:`)
     console.log(jsonVals)
 
-    console.log(`name: ${name}, email: ${email}, password: ${password}`)
+    // console.log(`name: ${name}, email: ${email}, password: ${password}`)
 
     // axios.defaults.headers.post['Content-Type'] ='application/json; charset=utf-8';
     // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -42,6 +42,7 @@ const useSignUp = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:5173'
         },
         body: jsonVals
       })

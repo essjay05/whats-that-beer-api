@@ -45,7 +45,7 @@ module.exports = {
       email: req.body.email,
       password: req.body.password
     }
-    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Origin', 'http://localhost:5173');
     console.log('set cors in create user')
     console.log(`authController data received from form:`)
     console.log(data)
