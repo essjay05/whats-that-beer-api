@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { message } from 'antd'
-import axios from 'axios'
+// import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext.jsx'
 
 const useSignUp = () => {
@@ -15,9 +15,6 @@ const useSignUp = () => {
       return setError('Passwords do not match!')
     }
 
-    console.log(`registerUser values:`)
-    console.log(values)
-
     const { name, email, password } = values
 
     const jsonVals = JSON.stringify({
@@ -25,14 +22,6 @@ const useSignUp = () => {
       email: email,
       password: password
     })
-
-    console.log(`jsonVals:`)
-    console.log(jsonVals)
-
-    // console.log(`name: ${name}, email: ${email}, password: ${password}`)
-
-    // axios.defaults.headers.post['Content-Type'] ='application/json; charset=utf-8';
-    // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
     try {
       setError(null)
@@ -47,9 +36,6 @@ const useSignUp = () => {
       })
 
       const data = await res.json()
-
-      console.log(`data aka res.json()`)
-      console.log(data)
 
       if (res.status === 201) {
         message.success('User successfully registered!')
@@ -85,11 +71,8 @@ const useSignUp = () => {
       //     console.log(err)
       //     message.error('Registration failed.')
       //   })
-
-      
       console.log(`res`)
       console.log(res)
-
       
     } catch(err) {
       console.error(err)
