@@ -13,10 +13,6 @@ const
   beersRoutes = require('./routes/beers.js'),
   path = require('path')
 
-var corsOptions  = {
-  origin: `http://localhost:${PORT}`
-}
-
 // connectToMongoDb().catch(console.dir);
 connectToMongoDb().catch(console.error)
 
@@ -25,6 +21,7 @@ connectToMongoDb().catch(console.error)
 const app = express()
 
 // Middleware
+app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'client', 'build')))
 app.use(bodyParser.json())
