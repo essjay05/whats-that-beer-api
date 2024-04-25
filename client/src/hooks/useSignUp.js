@@ -25,7 +25,7 @@ const useSignUp = () => {
 
     try {
       setError(null)
-      setLoading(false)
+      setLoading(true)
       const res = await fetch(mongoDbRegisterEndpoint, {
         mode: 'cors',
         method: 'POST',
@@ -43,9 +43,11 @@ const useSignUp = () => {
         setError(data.message)
         login(data.token, data.user)
         console.log('Res.status === 400')
+      } else if (res.status === 409) {
+        setError(data.message)
+        message.error('User already exists.')
       } else {
         
-        message.error('Registration failed.')
         console.log('Other error')
       }
 
