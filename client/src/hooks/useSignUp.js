@@ -7,7 +7,7 @@ const useSignUp = () => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null )
 
-  const mongoDbRegisterEndpoint = `${import.meta.env.VITE_USER_API_URL}`
+  const mongoDbRegisterEndpoint = `${import.meta.env.VITE_USER_API_URL}/signup`
 
   const registerUser = async (values) => {
     if (values.password !== values.passwordConfirm) {
