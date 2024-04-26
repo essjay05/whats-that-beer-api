@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { message } from 'antd'
-// import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext.jsx'
 
 const useSignUp = () => {
@@ -39,43 +38,20 @@ const useSignUp = () => {
 
       if (res.status === 201) {
         message.success('User successfully registered!')
+        login(data.token, data.user)
       } else if (res.status === 400) {
         setError(data.message)
-        login(data.token, data.user)
         console.log('Res.status === 400')
       } else if (res.status === 409) {
         setError(data.message)
         message.error('User already exists.')
+        console.log('Res.status === 409')
       } else {
-        
-        console.log('Other error')
+        message.error('Registration failed.')
       }
 
-      // const res = await axios.post(
-      //   mongoDbRegisterEndpoint,
-      //   signupBody,
-      //   { 
-      //     'Content-Type': 'application/json; charset=utf-8',
-      //     'Access-Control-Allow-Origin': '*',
-      //   })
-      //   .then((res) => {
-      //     if (res.status === 201) {
-      //       message.success('User successfully registered!')
-      //     } else if (res.status === 400) {
-      //       setError(data.message)
-      //       login(data.token, data.user)
-      //       console.log('Res.status === 400')
-      //     } else {
-      //       console.log('Other error')
-      //       message.error('Registration failed.')
-      //     }
-      //   }).catch((err) => {
-      //     console.log(err)
-      //     message.error('Registration failed.')
-      //   })
       console.log(`res`)
       console.log(res)
-      
     } catch(err) {
       console.error(err)
       message.error('Registration failed.')
