@@ -37,6 +37,7 @@ const useLogin = () => {
         login(data.token, data.user)
       } else if (res.status === 404) {
         setError(data.message)
+        message.error('Resgistration failed.')
         console.log('Res.status === 404')
       } else if (res.status === 401) {
         setError(data.message)
