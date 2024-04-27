@@ -1,18 +1,12 @@
 import { Avatar, Button, Card, Flex, Typography } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { useAuth } from '../contexts/AuthContext.jsx'
-import { useEffect } from 'react'
 
 import './Dashboard.css'
 
 const Dashboard = () => {
   
   const { userData, logout } = useAuth()
-
-  useEffect(() => {
-    console.log(`userData:`)
-    console.log(userData)
-  },[])
 
   const handleLogout = async() => {
     await logout()
