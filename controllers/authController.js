@@ -97,6 +97,7 @@ module.exports = {
         message: 'User logged in successfully!',
         user: {
           _id: existingUser._id,
+          name: existingUser.name,
           email: existingUser.email,
           role: existingUser.role
         },
