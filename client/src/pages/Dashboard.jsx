@@ -3,6 +3,8 @@ import { UserOutlined } from '@ant-design/icons'
 import { useAuth } from '../contexts/AuthContext.jsx'
 import { useEffect } from 'react'
 
+import './Dashboard.css'
+
 const Dashboard = () => {
   
   const { userData, logout } = useAuth()
