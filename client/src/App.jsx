@@ -5,6 +5,7 @@ import Register from './Auth/Register'
 import Login from './Auth/Login'
 import Dashboard from './pages/Dashboard'
 import Breweries from './pages/Breweries/Breweries'
+import Beers from './pages/Beers/Beers'
 import { useAuth } from './contexts/AuthContext'
 
 const App = () => { 
@@ -25,9 +26,9 @@ const App = () => {
       <Route path='/breweries' element={
         isAuthenticated ? <Breweries/> : <Login />
       }></Route>
-      {/* <Route path='/beers' element={
+      <Route path='/beers' element={
         isAuthenticated ? <Beers/> : <Login />
-      }></Route> */}
+      }></Route>
     </Routes>
   </Router>
 }
