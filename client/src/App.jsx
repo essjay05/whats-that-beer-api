@@ -26,6 +26,10 @@ const App = () => {
       <Route path='/breweries' element={
         isAuthenticated ? <Breweries/> : <Login />
       }></Route>
+      {/* Breweries Routes */}
+      <Route path='/breweries' element={
+        isAuthenticated ? <CreateBrewery/> : <Login />
+      }></Route>
       <Route path='/beers' element={
         isAuthenticated ? <Beers/> : <Login />
       }></Route>
