@@ -5,6 +5,7 @@ import Register from './Auth/Register'
 import Login from './Auth/Login'
 import Dashboard from './pages/Dashboard'
 import Breweries from './pages/Breweries/Breweries'
+import CreateBrewery from './pages/Breweries/CreateBrewery'
 import Beers from './pages/Beers/Beers'
 import { useAuth } from './contexts/AuthContext'
 
@@ -27,7 +28,7 @@ const App = () => {
         isAuthenticated ? <Breweries/> : <Login />
       }></Route>
       {/* Breweries Routes */}
-      <Route path='/breweries' element={
+      <Route path='/create-brewery' element={
         isAuthenticated ? <CreateBrewery/> : <Login />
       }></Route>
       <Route path='/beers' element={
