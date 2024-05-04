@@ -21,6 +21,24 @@ const CreateBreweryForm = () => {
             rules={[{ required: true, message: "Please input the brewery name."}]}>
             <Input placeholder="Enter the brewery name"/>
           </Form.Item>
+          <Form.Item
+            label="Brewery Country"
+            name="country"
+            rules={[{ required: true, message: "Please input the brewery country."}]}>
+            <Input placeholder="Enter the brewery country"/>
+          </Form.Item>
+          <Form.Item
+            label="Brewery City"
+            name="city"
+            rules={[{ required: true, message: "Please input the brewery city."}]}>
+            <Input placeholder="Enter the brewery city"/>
+          </Form.Item>
+          <Form.Item
+            label="Brewery Region"
+            name="region"
+            rules={[{ required: true, message: "Please input the brewery region."}]}>
+            <Input placeholder="Enter the brewery region"/>
+          </Form.Item>
           <Form.Item>
             <Button
               // type={`${loading ? '' : 'primary'}`}
