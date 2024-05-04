@@ -2,6 +2,7 @@
 // import { Link } from 'react-router-dom'
 
 import NavBar from "../../global/NavBar/NavBar"
+import CreateBreweryForm from "../../Forms/CreateBreweryForm"
 
 const CreateBrewery = () => {
   return (
@@ -10,6 +11,7 @@ const CreateBrewery = () => {
       <h1>Create Brewery</h1>
       <section>
         <h2>Add Brewery Form here:</h2>
+        <CreateBreweryForm/>
       </section>
     </div>
   )
