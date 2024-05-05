@@ -1,22 +1,30 @@
 import { useState } from 'react'
 import { message } from 'antd'
+import { capitalizeWords, convertToUrlString } from '../utils/FormatUtils'
+
 // import { useAuth } from '../contexts/AuthContext.jsx'
 
 const useAddBrewery = () => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null )
 
-  const breweryApi = `${import.meta.env.VITE_BREWERY_API_URL}/upsert`
-
   const createBrewery = async (values) => {
 
     const { name, country, city, region } = values
+    
+    // Prep name for upsert
+    const capitalizedString = capitalizeWords(name)
+    const urlString = convertToUrlString(capitalizedString)
 
+    // Insert formatted brewery name for upsert
+    const breweryApi = `${import.meta.env.VITE_BREWERY_API_URL}/${urlString}`
+
+    // Format Brewery values for database
     const jsonVals = JSON.stringify({
-      name: name,
-      country: country,
-      city: city,
-      region: region
+      name: capitalizeWords(name),
+      country: capitalizeWords(country),
+      city: capitalizeWords(city),
+      region: capitalizeWords(region)
     })
 
     try {
