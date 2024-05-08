@@ -1,6 +1,6 @@
 import { Alert, Button, Card, Flex, Form, Input, Spin, Typography } from 'antd';
 import { Link } from 'react-router-dom'
-import useAddBrewery from '../hooks/useAddBrewery';
+import useAddBrewery from '../hooks/brewery/useAddBrewery';
 
 const CreateBreweryForm = () => {
 
