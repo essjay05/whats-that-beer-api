@@ -52,14 +52,14 @@ const CreateBeerForm = () => {
             rules={[{ required: true, message: 'Please input the brewery region.'}]}>
             <Input placeholder='Enter the brewery region'/>
           </Form.Item>
-          { error && (
+          {/* { error && (
             <Alert
               description={error}
               type='error'
               showIcon
               closable
               className='alert' />
-          )}
+          )} */}
           <Form.Item>
             <Button
               // type={`${loading ? '' : 'primary'}`}
